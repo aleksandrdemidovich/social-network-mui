@@ -16,6 +16,7 @@ type ChatHeaderPropsType = {
     editMode: boolean
     selectedMessageCount: number
     setEditMode: () => void
+    deleteMessages: () => void
 }
 
 function ChatHeader(props: ChatHeaderPropsType) {
@@ -45,7 +46,7 @@ function ChatHeader(props: ChatHeaderPropsType) {
 
             <Grid item>
                 {props.editMode ? <Grid item>
-                        <Button variant={"contained"} color={"secondary"} size={"small"}>Delete</Button>
+                        <Button variant={"contained"} color={"secondary"} onClick={props.deleteMessages} size={"small"}>Delete</Button>
                     </Grid> :
                     <Grid container item direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
                         <Grid item>

@@ -1,14 +1,39 @@
-import {ProfilePageType} from "./store";
 import {v1} from "uuid";
+import {PhotosType} from "./users-reducer";
 
 const ADD_POST = "ADD-POST"
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
 const DELETE_POST = "DELETE-POST"
+const SET_USER_PROFILE = "SET-USER-PROFILE"
 
-type PostType = {
+export type PostType = {
     id: string
     message: string
     likeCount: number
+}
+export type ContactsType = {
+    vk: string
+    facebook: string
+    instagram: string
+    twitter: string
+    website: string
+    youtube: string
+    mainLink: string
+    github: string
+}
+export type ProfileType = {
+    aboutMe: string
+    contacts: ContactsType
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    fullName: string
+    userId: number
+    photos: PhotosType
+}
+export type ProfilePageType = {
+    posts: Array<PostType>
+    newPostText?: string
+    profile: ProfileType
 }
 
 export type InitialStateType = typeof initialState
@@ -23,7 +48,28 @@ const initialState: ProfilePageType = {
         },
         {id: v1(), message: 'Da da ', likeCount: 99},
     ] as PostType[],
-    newPostText: ''
+    newPostText: '',
+    profile: {
+        aboutMe: '',
+        contacts: {
+            facebook: '',
+            website:'',
+            vk: '',
+            twitter: '',
+            instagram: '',
+            youtube: '',
+            github: '',
+            mainLink: ''
+        },
+        lookingForAJob: false,
+        lookingForAJobDescription: '',
+        fullName: '',
+        userId: 20060,
+        photos: {
+            large: null,
+            small: null
+        }
+    } as ProfileType
 }
 
 
@@ -43,13 +89,16 @@ export const profileReducer = (state:InitialStateType = initialState, action: Ac
         case "DELETE-POST":{
             return {...state, posts:[...state.posts.filter(p => p.id !== action.postID)]}
         }
+        case "SET-USER-PROFILE":{
+            return {...state, profile:action.profile}
+        }
         default :
             return state
     }
 
 }
 
-type ActionsType = AddPostActionType | UpdateNewPostTextActionType | DeletePostActionType
+type ActionsType = AddPostActionType | UpdateNewPostTextActionType | DeletePostActionType | setUserProfileActionType
 
 export type AddPostActionType = ReturnType<typeof addPostActionCreator>
 export const addPostActionCreator = (postText: string)=> {
@@ -72,5 +121,13 @@ export const DeletePostCreator = (postID: string) => {
     return {
         type: DELETE_POST,
         postID: postID
+    } as const
+}
+
+export type setUserProfileActionType = ReturnType<typeof setUserProfile>
+export const setUserProfile = (profile: ProfileType) => {
+    return {
+        type: SET_USER_PROFILE,
+        profile
     } as const
 }

@@ -3,33 +3,34 @@ import {addPostActionCreator, profileReducer, UpdateNewPostTextCreator} from "./
 import {dialogsReducer, sendMessageCreator, UpdateNewMessTextCreator} from "./dialogs-reducer";
 
 
-export type MessageType = {
+type MessageType = {
     id: string
     message: string
 }
-export type DialogType = {
+type DialogType = {
     id: string
     name: string
 }
-export type PostType = {
+type PostType = {
     id: string
     message: string
     likeCount: number
 }
-export type ProfilePageType = {
+type ProfilePageType = {
     posts: Array<PostType>
     newPostText?: string
+
 }
-export type DialogPageType = {
+type DialogPageType = {
     dialogs: Array<DialogType>
     messages: Array<MessageType>
     newMessText: string
 }
-export type RootStateType = {
+type RootStateType = {
     profilePage: ProfilePageType
     dialogPage: DialogPageType
 }
-export type StoreType = {
+type StoreType = {
     _state: RootStateType
     rerenderEntireTree: () => void
 
@@ -41,11 +42,11 @@ export type StoreType = {
 
 type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateNewMessTextActionType
 
-export type AddPostActionType = ReturnType<typeof addPostActionCreator>
-export type UpdateNewPostTextActionType = ReturnType<typeof UpdateNewPostTextCreator>
+type AddPostActionType = ReturnType<typeof addPostActionCreator>
+type UpdateNewPostTextActionType = ReturnType<typeof UpdateNewPostTextCreator>
 
-export type SendMessageActionType = ReturnType<typeof sendMessageCreator>
-export type UpdateNewMessTextActionType = ReturnType<typeof UpdateNewMessTextCreator>
+type SendMessageActionType = ReturnType<typeof sendMessageCreator>
+type UpdateNewMessTextActionType = ReturnType<typeof UpdateNewMessTextCreator>
 
 
 const store : StoreType = {
@@ -61,7 +62,7 @@ const store : StoreType = {
                 },
                 {id: v1(), message: 'Da da ', likeCount: 99},
             ],
-            newPostText: ''
+            newPostText: '',
         },
         dialogPage: {
             dialogs: [

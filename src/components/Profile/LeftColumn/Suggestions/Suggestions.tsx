@@ -6,7 +6,7 @@ import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import {NavLink} from 'react-router-dom';
 import defaultUserPhoto from '../../../../assets/images/userAvatar.jpg'
 import axios from "axios";
-import {UsersResponsAPIType} from "../../../../APIResponseType/UsersResponsAPIType";
+import {UsersResponseAPIType} from "../../../../APIResponseType/UsersResponseAPIType";
 
 
 class Suggestions extends React.Component<SuggestionsPropsType> {
@@ -19,7 +19,7 @@ class Suggestions extends React.Component<SuggestionsPropsType> {
     }
 
     componentDidMount() {
-        axios.get<UsersResponsAPIType>("https://social-network.samuraijs.com/api/1.0/users?count=6")
+        axios.get<UsersResponseAPIType>("https://social-network.samuraijs.com/api/1.0/users?count=25")
             .then(response => {
                 this.props.setUsers(response.data.items)
             });
@@ -27,7 +27,9 @@ class Suggestions extends React.Component<SuggestionsPropsType> {
 
     render() {
 
-        const suggestionElements = this.props.users.map(s => {
+        const top6Users = this.props.users.slice(0,6)
+
+        const suggestionElements = top6Users.map(s => {
             return <Grid item>
                 <Grid container xs={12} item spacing={2} direction={"row"} wrap={"nowrap"}
                       justifyContent={'flex-start'}>
@@ -43,7 +45,7 @@ class Suggestions extends React.Component<SuggestionsPropsType> {
                             {s.name}
                         </Typography>
                         <Typography variant="caption">
-                            {s.status}
+                            {s.status === null ? 'default status' : s.status }
                         </Typography>
                     </Grid>
                     <Grid item style={{marginLeft: 'auto'}}>

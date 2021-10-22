@@ -1,9 +1,14 @@
 import React from 'react';
-import {DeleteDialogCreator, sendMessageCreator, UpdateNewMessTextCreator} from "../../redux/dialogs-reducer";
+import {
+    DeleteDialogCreator,
+    DialogPageType,
+    sendMessageCreator,
+    UpdateNewMessTextCreator
+} from "../../redux/dialogs-reducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
-import {DialogPageType} from "../../redux/store";
+
 import { Dispatch } from 'redux';
 
 type mapStateToPropsType = {

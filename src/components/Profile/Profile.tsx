@@ -9,10 +9,20 @@ import ProfileInfo from "./LeftColumn/ProfileInfo/ProfileInfo";
 import AddPostContainer from "./RightColumn/AddPost/AddPostContainer";
 import PostsContainer from "./RightColumn/Posts/PostsContainer";
 import SuggestionsContainer from "./LeftColumn/Suggestions/SuggestionsContainer";
+import {ProfilePropsType} from "./ProfileContainer";
+import Preloader from "../../common/Preloader/Preloader";
 
 
 
-function App() {
+
+//ToDo
+function Profile(props: ProfilePropsType) {
+
+    if(!props.profile) {
+        return <Preloader/>
+    }
+
+
 
     return (
         <>
@@ -23,7 +33,7 @@ function App() {
                   spacing={4} >
                 <Grid item>
                     <Paper elevation={4}>
-                        <ProfileInfo/>
+                        <ProfileInfo profile={props.profile}/>
                     </Paper>
                 </Grid>
                 <Grid item>
@@ -40,7 +50,7 @@ function App() {
                   flexWrap={"nowrap"}>
                 <Grid item>
                     <Paper elevation={4}>
-                        <UserInfo/>
+                        <UserInfo profile={props.profile}/>
                     </Paper>
                 </Grid>
                 <Grid item>
@@ -54,4 +64,4 @@ function App() {
     );
 }
 
-export default App;
+export default Profile;

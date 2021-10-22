@@ -2,6 +2,7 @@ import React from 'react';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import {Badge, BadgeProps, Grid, IconButton, Input, Paper, styled, Typography} from "@mui/material";
 import useClasses from "../../../../customHookCSS/useClasses";
+import {ProfileType} from "../../../../redux/profile-reducer";
 
 
 const Item = styled(Paper)(({theme}) => ({
@@ -14,7 +15,7 @@ const Item = styled(Paper)(({theme}) => ({
 }));
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
     '& .MuiBadge-badge': {
-        right: -53,
+        right: -59,
         top: 7,
         padding: '0 4px',
         font: 'italic 0.9em "Fira Sans", serif'
@@ -45,7 +46,11 @@ const styles = (theme:any) =>  ({
 
 });
 
-function UserInfo() {
+type UserInfoPropsType = {
+    profile: ProfileType
+}
+
+function UserInfo(props: UserInfoPropsType) {
 
     const classes = useClasses(styles);
 
@@ -57,12 +62,12 @@ function UserInfo() {
                         <EditOutlinedIcon/>
                     </IconButton>
                     <Typography variant="h6" fontWeight={"bold"} component="h1" className={classes.userName}>
-                        Aleksandr Demidovich
+                        {props.profile.fullName}
                     </Typography>
-                    <Input disableUnderline placeholder="Set status" className={classes.statusInput}/>
-                    <StyledBadge  badgeContent={'Open to work'} color="success">
+                    <Input disableUnderline value={props.profile.aboutMe ? props.profile.aboutMe : '' } placeholder="Set status" className={classes.statusInput}/>
+                    <StyledBadge invisible={!props.profile.lookingForAJob} badgeContent={'Open to work'} color="success">
                         <span  className={classes.userPosition} >
-                            Frontend developer
+                            {props.profile.lookingForAJobDescription ? props.profile.lookingForAJobDescription : 'default description'}
                         </span>
                     </StyledBadge>
                 </Grid>

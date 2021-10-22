@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {currentTime} from "../../../Profile/RightColumn/Posts/Post/Post";
-import {MessageType} from "../../../../redux/store";
+import {currentTime} from "../../Profile/RightColumn/Posts/Post/Post";
 import {styled} from "@mui/material/styles";
 import {Grid} from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import {MessageType} from "../../../redux/dialogs-reducer";
 
 
 

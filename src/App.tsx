@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 import Header from "./components/Header/AppBar";
 import {
+    Alert,
     createTheme,
     CssBaseline, Grid,
     PaletteOptions,
-    Paper,
+    Paper, Snackbar,
     styled,
     ThemeProvider,
 } from "@mui/material";
 import {Redirect, Route, Switch} from "react-router-dom";
-import Profile from "./components/Profile/Profile";
 import NavBar from "./components/NavBar/NavBar";
 import Music from "./components/ComingSoon/Music/Music";
 import News from "./components/ComingSoon/News/News";
@@ -22,6 +22,7 @@ import ChatContainer from "./components/Dialogs/ChatContainer";
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 import useClasses from "./customHookCSS/useClasses";
+import ProfileContainer from "./components/Profile/ProfileContainer";
 
 
 const lightTheme = createTheme({
@@ -48,12 +49,12 @@ const darkTheme = createTheme({
 });
 
 
-const MainContentContainer = styled('div')(({ theme }) => ({
+const MainContentContainer = styled('div')(({theme}) => ({
     flexGrow: 1,
     margin: 'auto',
     width: '70%',
-    marginTop: '20px' ,
-    marginBottom:'20px',
+    marginTop: '20px',
+    marginBottom: '20px',
     [theme.breakpoints.down('md')]: {
         width: '90%',
     },
@@ -65,30 +66,30 @@ const MainContentContainer = styled('div')(({ theme }) => ({
     },
 }));
 
-const styles = (theme:any) =>  ({
+const styles = (theme: any) => ({
     rootContainer: {
         gap: 16,
         [theme.breakpoints.between('xs', "md")]: {
-            display:'flex',
+            display: 'flex',
             flexDirection: 'column',
             flexWrap: 'wrap',
-            justifyContent:'center',
-            width:'100%',
-            alignItems:'center',
+            justifyContent: 'center',
+            width: '100%',
+            alignItems: 'center',
         },
         [theme.breakpoints.between('md', "lg")]: {
-            display:'flex',
+            display: 'flex',
             flexDirection: 'row',
             flexWrap: 'nowrap',
         },
         [theme.breakpoints.up('lg')]: {
-            display:'flex',
+            display: 'flex',
             direction: 'row',
             flexWrap: 'nowrap',
         },
 
     },
-    navigationContainer:{
+    navigationContainer: {
         [theme.breakpoints.between('xs', "md")]: {
             display: 'none'
         },
@@ -96,18 +97,9 @@ const styles = (theme:any) =>  ({
             display: 'flex'
         }
     },
-    rightDialogMenu:{
-        [theme.breakpoints.down("md")]: {
-            display: 'none'
-        },
-        [theme.breakpoints.up('md')]: {
-            display: 'block',
-            width:'300px'
-        }
-    }
+
 
 });
-
 
 
 function App() {
@@ -121,14 +113,14 @@ function App() {
     }
 
     return (
-        <ThemeProvider theme={isDarkMode ? lightTheme : darkTheme}>
+        <ThemeProvider theme={isDarkMode ? darkTheme :  lightTheme}>
             <CssBaseline/>
             <div className="App">
                 <Header
                     isDarkMode={isDarkMode}
                     toggleThemeMode={toggleThemeMode}/>
                 <MainContentContainer>
-                    <Grid  item className={classes.rootContainer}>
+                    <Grid item className={classes.rootContainer}>
                         <Grid item className={classes.navigationContainer}>
                             <Grid item>
                                 <Paper elevation={4}>
@@ -140,51 +132,29 @@ function App() {
                             <Route exact path="/">
                                 <Redirect to="/profile"/>
                             </Route>
-                            <Route path='/profile' render={() => <Profile/>}/>
+                            <Route path='/profile/:userId?' render={() => <ProfileContainer/>}/>
                             <Route exact path='/dialogs' render={() =>
-                                <Grid container item spacing={2}  flexDirection={"row"} flexWrap={"nowrap"}>
-                                    <Grid item xs={12} md={12} lg={9}>
-                                        <Paper elevation={4}>
-                                            <DialogsContainer/>
-                                        </Paper>
-                                    </Grid>
-                                    <Grid item lg={3} className={classes.rightDialogMenu}>
-                                        <Paper elevation={4}>
-                                            <RightDialogMenu/>
-                                        </Paper>
-                                    </Grid>
-                                </Grid>}/>
+                                <Grid container item spacing={2} flexDirection={"row"} flexWrap={"nowrap"}>
+                                    <DialogsContainer/>
+                                    <RightDialogMenu/>
+                                </Grid>
+                            }/>
                             <Route path='/dialogs/:id' render={() =>
                                 <Grid container item spacing={2} flexDirection={"row"} flexWrap={"nowrap"}>
-                                    <Grid item xs={12} md={12} lg={9}>
-                                        <Paper elevation={2}>
-                                            <ChatContainer/>
-                                        </Paper>
-                                    </Grid>
-                                    <Grid item lg={3} className={classes.rightDialogMenu} >
-                                        <Paper elevation={4}>
-                                            <RightDialogMenu/>
-                                        </Paper>
-                                    </Grid>
-                                </Grid>}/>
-                            <Route path='/users'
-                                   render={() => <Grid  item xs={10}><UsersContainer/></Grid>}/>
-                            <Route path='/news'
-                                   render={() => <Grid item xs={10}><Paper elevation={2}><News/></Paper></Grid>}/>
-                            <Route path='/music'
-                                   render={() => <Grid item xs={10}><Paper elevation={2}><Music/></Paper></Grid>}/>
-                            <Route path='/communities'
-                                   render={() => <Grid item xs={10}><Paper elevation={2}><Communities/></Paper></Grid>}/>
-                            <Route path='/photos'
-                                   render={() => <Grid item xs={10}><Paper elevation={2}><Photos/></Paper></Grid>}/>
-                            <Route path='/videos'
-                                   render={() => <Grid item xs={10}><Paper elevation={2}><Videos/></Paper></Grid>}/>
-                            <Route path='/settings'
-                                   render={() => <Grid item xs={10}><Paper elevation={4}><Settings/></Paper></Grid>}/>
+                                    <ChatContainer/>
+                                    <RightDialogMenu/>
+                                </Grid>
+                            }/>
+                            <Route path='/users' render={() => <UsersContainer/>}/>
+                            <Route path='/news' render={() =><News/>}/>
+                            <Route path='/music' render={() => <Music/>}/>
+                            <Route path='/communities' render={() => <Communities/>}/>
+                            <Route path='/photos' render={() => <Photos/>}/>
+                            <Route path='/videos' render={() => <Videos/>}/>
+                            <Route path='/settings' render={() => <Settings/>}/>
                         </Switch>
                     </Grid>
                 </MainContentContainer>
-
 
             </div>
         </ThemeProvider>

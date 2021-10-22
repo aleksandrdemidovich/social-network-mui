@@ -1,9 +1,14 @@
 import React from 'react';
-import {sendMessageCreator, UpdateNewMessTextCreator} from "../../redux/dialogs-reducer";
-import Dialogs from "./Dialogs";
+import {
+    DeleteMessagesCreator,
+    DialogPageType,
+    sendMessageCreator,
+    UpdateNewMessTextCreator
+} from "../../redux/dialogs-reducer";
+
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
-import {DialogPageType} from "../../redux/store";
+
 import { Dispatch } from 'redux';
 import Chat from "./Chat";
 
@@ -14,6 +19,7 @@ type mapStateToPropsType = {
 type mapDispatchPropsType = {
     onChangeMess: (text: string) => void
     sendMessage: (newMessText: string) => void
+    deleteMessages:(selectedMess: string[]) => void
 }
 
 export type  DialogsPropsType = mapStateToPropsType & mapDispatchPropsType
@@ -31,9 +37,10 @@ const mapDispatchToProps = (dispatch: Dispatch):mapDispatchPropsType => {
         },
         sendMessage: (newMessText: string) => {
            dispatch(sendMessageCreator(newMessText))
-
+        },
+        deleteMessages: (selectedMess: string[]) => {
+            dispatch(DeleteMessagesCreator(selectedMess))
         }
-
     }
 }
 

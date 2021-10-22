@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Avatar, Button, Grid, Paper, TextField} from "@mui/material";
 import {AddPostPropsType} from "./AddPostContainer";
 import useClasses from "../../../../customHookCSS/useClasses";
@@ -16,6 +16,8 @@ function AddPost(props: AddPostPropsType) {
 
     const classes = useClasses(styles);
 
+    const [error, setError] = useState(false)
+
     const addPost = () => {
         if (props.profilePage.newPostText?.trim() !== '') {
             props.addPost(props.newPostText!)
@@ -23,6 +25,7 @@ function AddPost(props: AddPostPropsType) {
     }
     const onPostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         let text = e.currentTarget.value
+        setError(false)
         props.onPostChange(text)
     }
     const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -31,6 +34,7 @@ function AddPost(props: AddPostPropsType) {
             props.addPost(props.newPostText)
         } else if(props.newPostText.trim() === '' && e.charCode === 13) {
             e.preventDefault()
+            setError(true)
         }
     }
 
@@ -47,9 +51,11 @@ function AddPost(props: AddPostPropsType) {
                 <Grid item xs={12} lg={12}>
                     <TextField
                         id="outlined-multiline-flexible"
-                        label="What's new?"
+                        label={error ? "Empty post text" : "What's new?"}
                         multiline
                         maxRows={3}
+                        error={error}
+                        onBlur={() => setError(false)}
                         fullWidth
                         size={"small"}
                         value={props.newPostText}

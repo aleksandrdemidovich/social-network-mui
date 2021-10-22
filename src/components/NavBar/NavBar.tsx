@@ -49,7 +49,7 @@ export default function NavBar() {
 
         <Grid  className={classes.rootContainer} >
 
-                <NavLink to="/profile" className={classes.navLink}>
+                <NavLink to="/" className={classes.navLink}>
                 <ListItemButton
                     selected={selectedIndex === 0}
                     onClick={(event) => handleListItemClick(event, 0)}

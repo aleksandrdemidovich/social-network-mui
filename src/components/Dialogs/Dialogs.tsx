@@ -2,9 +2,9 @@ import React from 'react';
 import {
     Divider,
     Grid,
-    List,
+    List, Paper,
 } from "@mui/material";
-import DialogsHeader from "./DialogsHeader/DialogsHeader";
+import DialogsHeader from "./Headers/DialogsHeader";
 import {DialogsPropsType} from "./DialogsContainer";
 import UserDialogElement from "./UserDialogElement/UserDialogElement";
 import {styled} from "@mui/material/styles";
@@ -31,22 +31,25 @@ function Dialogs(props: DialogsPropsType) {
                                      id={d.id}
                                      name={d.name}
                                      deleteDialog={props.deleteDialog}
-        />
-
-   );
+            />
+        );
 
     return (
-        <RootContainer >
-            <Grid item>
-                <DialogsHeader/>
-                <Divider/>
-            </Grid>
-            <Grid item wrap={"nowrap"}>
-                <List style={{paddingTop:0}}>
-                    {dialogsElements}
-                </List>
-            </Grid>
-        </RootContainer>
+        <Grid item xs={12} md={12} lg={9}>
+            <Paper elevation={4}>
+                <RootContainer>
+                    <Grid item>
+                        <DialogsHeader/>
+                        <Divider/>
+                    </Grid>
+                    <Grid item wrap={"nowrap"}>
+                        <List style={{paddingTop: 0}}>
+                            {dialogsElements}
+                        </List>
+                    </Grid>
+                </RootContainer>
+            </Paper>
+        </Grid>
     )
 }
 

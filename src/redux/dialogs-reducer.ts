@@ -3,6 +3,7 @@ import {v1} from "uuid";
 const SEND_MESSAGE = "SEND-MESSAGE"
 const UPDATE_NEW_MESSAGE_TEXT = "UPDATE_NEW_MESSAGE_TEXT"
 const DELETE_DIALOG = "DELETE-DIALOG"
+const DELETE_MESSAGES = "DELETE-MESSAGES"
 
 export type MessageType = {
     id: string
@@ -13,10 +14,15 @@ export type DialogType = {
     name: string
 }
 
+export type DialogPageType = {
+    dialogs: Array<DialogType>
+    messages: Array<MessageType>
+    newMessText: string
+}
 
 export type InitialStateType = typeof initialState
 
-const initialState = {
+const initialState: DialogPageType = {
     dialogs: [
         {id: v1(), name: 'Alex'},
         {id: v1(), name: 'John'},
@@ -59,12 +65,15 @@ export const dialogsReducer = (state: InitialStateType = initialState, action: A
         case "DELETE-DIALOG":{
             return {...state, dialogs:[...state.dialogs.filter(d => d.id !== action.dialogID)]}
         }
+        case "DELETE-MESSAGES":{
+            return {...state, messages: [...state.messages.filter(m => !action.selectedMessages.includes(m.id))]}
+        }
         default :
             return state
     }
 }
 
-type ActionsType =  SendMessageActionType | UpdateNewMessTextActionType | DeleteDialogActionType
+type ActionsType =  SendMessageActionType | UpdateNewMessTextActionType | DeleteMessagesActionType |  DeleteDialogActionType
 
 export type SendMessageActionType = ReturnType<typeof sendMessageCreator>
 export const sendMessageCreator = (messText: string)=> {
@@ -81,6 +90,15 @@ export const UpdateNewMessTextCreator= (messText: string) => {
         newMessText: messText
     } as const
 }
+
+export type DeleteMessagesActionType = ReturnType<typeof DeleteMessagesCreator>
+export const DeleteMessagesCreator= (selectedMessages: string[]) => {
+    return {
+        type: DELETE_MESSAGES,
+        selectedMessages
+    } as const
+}
+
 
 export type DeleteDialogActionType = ReturnType<typeof DeleteDialogCreator>
 export const DeleteDialogCreator= (dialogID: string) => {

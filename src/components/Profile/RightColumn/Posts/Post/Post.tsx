@@ -4,10 +4,9 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import {Avatar, Grid, IconButton} from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
-import {PostType} from "../../../../../state/state";
 import useClasses from "../../../../../customHookCSS/useClasses";
 import {styled} from "@mui/material/styles";
-import {Delete} from "@mui/icons-material";
+import { PostType } from '../../../../../redux/profile-reducer';
 
 
 function checkOneDigitNumbers(i: any) {

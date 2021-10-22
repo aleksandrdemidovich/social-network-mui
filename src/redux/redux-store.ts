@@ -16,3 +16,6 @@ const store = createStore( rootReducers)
 
 export default store
 
+// @ts-ignore
+window.store = store;
+

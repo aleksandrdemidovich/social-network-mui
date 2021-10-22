@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Avatar, Button, Grid, Paper, Typography} from "@mui/material";
+import {Avatar, Button, Grid, Paper, styled, Typography} from "@mui/material";
 
 
 function UserCard() {
@@ -20,8 +20,6 @@ function UserCard() {
                 <Avatar
                     alt="Tony Stark"
                     src="https://www.seoclerk.com/pics/319222-1IvI0s1421931178.png"
-                    sx={{width: 70, height: 70}}
-
                 />
                 <Typography fontWeight={"bold"} variant={"subtitle1"} style={{paddingTop:'10px'}}>User Name</Typography>
                 <Typography variant={"caption"}>User status</Typography>
@@ -34,3 +32,4 @@ function UserCard() {
 }
 
 export default UserCard;
+

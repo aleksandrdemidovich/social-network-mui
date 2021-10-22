@@ -1,6 +1,5 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
-import {DialogType} from "../../../redux/store";
 import {
     Avatar,
     Divider,
@@ -13,6 +12,7 @@ import {
 } from "@mui/material";
 import {currentTime} from "../../Profile/RightColumn/Posts/Post/Post";
 import CustomizedDialogsAlert from "../../Alerts/DialogsAlert/CustomizedDialogsAlert";
+import {DialogType} from "../../../redux/dialogs-reducer";
 
 type UserDialogElementPropsType = {
     deleteDialog: (dialogID: string) => void

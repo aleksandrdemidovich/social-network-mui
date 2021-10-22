@@ -12,22 +12,22 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import useClasses from "../../../../customHookCSS/useClasses";
+import {ProfileType} from "../../../../redux/profile-reducer";
+import defaultUserAvatar from '../../../../assets/images/userAvatar.jpg'
 
-
-
-const CustomAvatar = styled(Avatar)<AvatarProps>(({ theme }) => ({
+const CustomAvatar = styled(Avatar)<AvatarProps>(({theme}) => ({
     width: 200,
     height: 200,
     margin: 'auto',
-    marginTop:'-25px',
+    marginTop: '-25px',
     border: '3px solid transparent',
-        '&:hover': {
-            border: `3px solid #3f51b5`
-        }
+    '&:hover': {
+        border: `3px solid #3f51b5`
+    }
 }));
-const styles = (theme:any) =>  ({
-    editButton:{
-        float:'right', display:'inline'
+const styles = (theme: any) => ({
+    editButton: {
+        float: 'right', display: 'inline'
     },
     profileFacebookIcon: {
         paddingRight: '10px', color: '#4267B2',
@@ -56,22 +56,25 @@ const styles = (theme:any) =>  ({
 
 });
 
-function ProfileInfo() {
+type ProfileInfoPropsType = {
+    profile: ProfileType
+}
 
+function ProfileInfo(props: ProfileInfoPropsType) {
     const classes = useClasses(styles);
 
-    return (
 
-        <Grid container item direction={"column"} >
-            <Grid item >
+    return (
+        <Grid container item direction={"column"}>
+            <Grid item>
                 <IconButton className={classes.editButton} color={"primary"}>
                     <EditOutlinedIcon/>
                 </IconButton>
             </Grid>
-            <Grid item >
-                <CustomAvatar src="https://www.seoclerk.com/pics/319222-1IvI0s1421931178.png"/>
+            <Grid item>
+                <CustomAvatar src={props.profile.photos.large ? props.profile.photos.large  : defaultUserAvatar }/>
             </Grid>
-            <Grid item >
+            <Grid item>
                 <ListItemButton>
                     <ListItemIcon>
                         <FacebookIcon fontSize={"large"} className={classes.profileFacebookIcon}/>
@@ -93,7 +96,7 @@ function ProfileInfo() {
                                  className={classes.profileVkontakteIcon}/>
                         </i>
                     </ListItemIcon>
-                    <ListItemText  primary="VK"/>
+                    <ListItemText primary="VK"/>
                 </ListItemButton>
                 <Divider/>
                 <ListItemButton>

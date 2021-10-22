@@ -1,11 +1,9 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {AppStateType} from "../../../../redux/redux-store";
-import {PostType} from "../../../../redux/store";
 import Posts from "./Posts";
 import {Dispatch} from "redux";
-import {sendMessageCreator, UpdateNewMessTextCreator} from "../../../../redux/dialogs-reducer";
-import {DeletePostCreator} from "../../../../redux/profile-reducer";
+import {DeletePostCreator, PostType} from "../../../../redux/profile-reducer";
 
 
 type mapStateToPropsType = {
