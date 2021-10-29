@@ -76,61 +76,61 @@ function ProfileInfo(props: ProfileInfoPropsType) {
             </Grid>
             <Grid item>
                 <ListItemButton>
-                    <ListItemIcon>
+                    <StyledListItemIcon >
                         <FacebookIcon fontSize={"large"} className={classes.profileFacebookIcon}/>
-                    </ListItemIcon>
+                    </StyledListItemIcon>
                     <ListItemText primary="Facebook"/>
                 </ListItemButton>
                 <Divider/>
                 <ListItemButton>
-                    <ListItemIcon>
+                    <StyledListItemIcon>
                         <LanguageIcon fontSize={"large"} className={classes.profileWebsiteIcon}/>
-                    </ListItemIcon>
+                    </StyledListItemIcon>
                     <ListItemText primary="Website"/>
                 </ListItemButton>
                 <Divider/>
                 <ListItemButton>
-                    <ListItemIcon>
+                    <StyledListItemIcon>
                         <i style={{padding: '2px'}}>
                             <img src='https://upload.wikimedia.org/wikipedia/commons/2/21/VK.com-logo.svg'
                                  className={classes.profileVkontakteIcon}/>
                         </i>
-                    </ListItemIcon>
+                    </StyledListItemIcon>
                     <ListItemText primary="VK"/>
                 </ListItemButton>
                 <Divider/>
                 <ListItemButton>
-                    <ListItemIcon>
+                    <StyledListItemIcon>
                         <TwitterIcon fontSize={"large"} className={classes.profileTwitterIcon}/>
-                    </ListItemIcon>
+                    </StyledListItemIcon>
                     <ListItemText primary="Twitter"/>
                 </ListItemButton>
                 <Divider/>
                 <ListItemButton>
-                    <ListItemIcon>
+                    <StyledListItemIcon>
                         <InstagramIcon fontSize={"large"} className={classes.profileInstagramIcon}/>
-                    </ListItemIcon>
+                    </StyledListItemIcon>
                     <ListItemText primary="Instagram"/>
                 </ListItemButton>
                 <Divider/>
                 <ListItemButton>
-                    <ListItemIcon>
+                    <StyledListItemIcon>
                         <YouTubeIcon fontSize={"large"} className={classes.profileYouTubeIcon}/>
-                    </ListItemIcon>
+                    </StyledListItemIcon>
                     <ListItemText primary="YouTube"/>
                 </ListItemButton>
                 <Divider/>
                 <ListItemButton>
-                    <ListItemIcon>
+                    <StyledListItemIcon>
                         <GitHubIcon fontSize={"large"} className={classes.profileGitHubIcon}/>
-                    </ListItemIcon>
+                    </StyledListItemIcon>
                     <ListItemText primary="GitHub"/>
                 </ListItemButton>
                 <Divider/>
                 <ListItemButton>
-                    <ListItemIcon>
+                    <StyledListItemIcon>
                         <LinkedInIcon fontSize={"large"} className={classes.profileLinkedInIcon}/>
-                    </ListItemIcon>
+                    </StyledListItemIcon>
                     <ListItemText primary="LinkedIn"/>
                 </ListItemButton>
             </Grid>
@@ -139,3 +139,8 @@ function ProfileInfo(props: ProfileInfoPropsType) {
 }
 
 export default ProfileInfo;
+
+const StyledListItemIcon = styled(ListItemIcon)`
+  min-width: 40px;
+  color: #3f51b5;
+`

@@ -1,33 +1,21 @@
 import React from 'react';
 import {Avatar, Button, Divider, Grid, IconButton, Typography} from "@mui/material";
-import {SuggestionsPropsType} from "./SuggestionsContainer";
 import IndeterminateCheckBoxOutlinedIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import {NavLink} from 'react-router-dom';
 import defaultUserPhoto from '../../../../assets/images/userAvatar.jpg'
-import axios from "axios";
-import {UsersResponseAPIType} from "../../../../APIResponseType/UsersResponseAPIType";
+import {UserType} from "../../../../redux/users-reducer";
 
 
-class Suggestions extends React.Component<SuggestionsPropsType> {
+type SuggestionPropsType = {
+    users: Array<UserType>
+    follow: (userId: number) => void
+    unfollow: (userId: number) => void
+}
 
-    follow = (userId: string) => {
-        this.props.follow(userId)
-    }
-    unfollow = (userId: string) => {
-        this.props.unfollow(userId)
-    }
+function Suggestions (props: SuggestionPropsType) {
 
-    componentDidMount() {
-        axios.get<UsersResponseAPIType>("https://social-network.samuraijs.com/api/1.0/users?count=25")
-            .then(response => {
-                this.props.setUsers(response.data.items)
-            });
-    }
-
-    render() {
-
-        const top6Users = this.props.users.slice(0,6)
+        const top6Users = props.users.filter(u => !u.followed).slice(0,6)
 
         const suggestionElements = top6Users.map(s => {
             return <Grid item>
@@ -51,11 +39,11 @@ class Suggestions extends React.Component<SuggestionsPropsType> {
                     <Grid item style={{marginLeft: 'auto'}}>
                         {s.followed ?
                             <IconButton aria-label="delete" size="large"
-                                        onClick={() => this.unfollow(s.id)}><IndeterminateCheckBoxOutlinedIcon
+                                        onClick={() => props.unfollow(s.id)}><IndeterminateCheckBoxOutlinedIcon
                                 fontSize="inherit"
                                 color={"secondary"}/></IconButton>
                             : <IconButton aria-label="delete" size="large"
-                                          onClick={() => this.follow(s.id)}><AddBoxOutlinedIcon
+                                          onClick={() => props.follow(s.id)}><AddBoxOutlinedIcon
                                 fontSize="inherit" color={"success"}/></IconButton>}
                     </Grid>
                 </Grid>
@@ -81,6 +69,6 @@ class Suggestions extends React.Component<SuggestionsPropsType> {
 
         );
     }
-}
+
 
 export default Suggestions;

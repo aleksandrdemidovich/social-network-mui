@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NavLink } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -12,22 +12,13 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import PeopleIcon from '@mui/icons-material/People';
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import VideoCameraBackOutlinedIcon from '@mui/icons-material/VideoCameraBackOutlined';
-import {Grid} from "@mui/material";
 import useClasses from "../../customHookCSS/useClasses";
+import {IconButton, styled} from "@mui/material";
 
 
-const styles = (theme:any) =>  ({
-    rootContainer: {
-        [theme.breakpoints.between('md', "lg")]: {
-            display:'flex',
-            flexDirection: 'column',
-            width:'60px',
-            overflow:'hidden',
-            flexWrap: 'wrap',
-        },
-    },
-    navLink:{
-        textDecoration:'none', color:'inherit'
+const styles = (theme: any) => ({
+    navLink: {
+        textDecoration: 'none', color: 'inherit'
     }
 });
 
@@ -46,109 +37,111 @@ export default function NavBar() {
 
 
     return (
-
-        <Grid  className={classes.rootContainer} >
-
-                <NavLink to="/" className={classes.navLink}>
+        <>
+            <NavLink to="/" className={classes.navLink}>
                 <ListItemButton
                     selected={selectedIndex === 0}
                     onClick={(event) => handleListItemClick(event, 0)}
                 >
-                        <ListItemIcon>
-                            <AccountCircleOutlinedIcon/>
-                        </ListItemIcon>
-                        <ListItemText   primary="Profile"/>
+                    <StyledListItemIcon>
+                        <AccountCircleOutlinedIcon/>
+                    </StyledListItemIcon>
+                    <ListItemText primary="Profile"/>
                 </ListItemButton>
-                </NavLink>
-                <NavLink to="/dialogs" className={classes.navLink}>
+            </NavLink>
+            <NavLink to="/dialogs" className={classes.navLink}>
                 <ListItemButton
                     selected={selectedIndex === 1}
                     onClick={(event) => handleListItemClick(event, 1)}
                 >
-                    <ListItemIcon>
+                    <StyledListItemIcon>
                         <ChatOutlinedIcon/>
-                    </ListItemIcon>
+                    </StyledListItemIcon>
                     <ListItemText primary="Messanger"/>
                 </ListItemButton>
-                </NavLink>
-                <NavLink to="/users" className={classes.navLink}>
+            </NavLink>
+            <NavLink to="/users" className={classes.navLink}>
                 <ListItemButton
                     selected={selectedIndex === 2}
                     onClick={(event) => handleListItemClick(event, 2)}
                 >
-                    <ListItemIcon>
+                    <StyledListItemIcon>
                         <GroupAddOutlinedIcon/>
-                    </ListItemIcon>
+                    </StyledListItemIcon>
                     <ListItemText primary="Users"/>
                 </ListItemButton>
-                </NavLink>
-                <NavLink to="/news" className={classes.navLink}>
+            </NavLink>
+            <NavLink to="/news" className={classes.navLink}>
                 <ListItemButton
                     selected={selectedIndex === 3}
                     onClick={(event) => handleListItemClick(event, 3)}
                 >
-                    <ListItemIcon>
+                    <StyledListItemIcon>
                         <BallotOutlinedIcon/>
-                    </ListItemIcon>
+                    </StyledListItemIcon>
                     <ListItemText primary="News"/>
                 </ListItemButton>
-                </NavLink>
-                <NavLink to="/music" className={classes.navLink}>
+            </NavLink>
+            <NavLink to="/music" className={classes.navLink}>
                 <ListItemButton
                     selected={selectedIndex === 4}
                     onClick={(event) => handleListItemClick(event, 4)}
                 >
-                    <ListItemIcon>
+                    <StyledListItemIcon>
                         <LibraryMusicOutlinedIcon/>
-                    </ListItemIcon>
+                    </StyledListItemIcon>
                     <ListItemText primary="Music"/>
                 </ListItemButton>
-                </NavLink>
-                <NavLink to="/communities" className={classes.navLink}>
-                    <ListItemButton
-                        selected={selectedIndex === 5}
-                        onClick={(event) => handleListItemClick(event, 5)}
-                    >
-                        <ListItemIcon>
-                            <PeopleIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Communities"/>
-                    </ListItemButton>
-                </NavLink>
-                <NavLink to="/photos" className={classes.navLink}>
-                    <ListItemButton
-                        selected={selectedIndex === 6}
-                        onClick={(event) => handleListItemClick(event, 6)}
-                    >
-                        <ListItemIcon>
-                            <PhotoCameraOutlinedIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Photos"/>
-                    </ListItemButton>
-                </NavLink>
-                <NavLink to="/videos" className={classes.navLink}>
-                    <ListItemButton
-                        selected={selectedIndex === 7}
-                        onClick={(event) => handleListItemClick(event, 7)}
-                    >
-                        <ListItemIcon>
-                            <VideoCameraBackOutlinedIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Viedos"/>
-                    </ListItemButton>
-                </NavLink>
-                <NavLink to="/settings" className={classes.navLink}>
-                    <ListItemButton
-                        selected={selectedIndex === 8}
-                        onClick={(event) => handleListItemClick(event, 8)}
-                    >
-                        <ListItemIcon>
-                            <SettingsOutlinedIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Settings"/>
-                    </ListItemButton>
-                </NavLink>
-        </Grid>
-
+            </NavLink>
+            <NavLink to="/communities" className={classes.navLink}>
+                <ListItemButton
+                    selected={selectedIndex === 5}
+                    onClick={(event) => handleListItemClick(event, 5)}
+                >
+                    <StyledListItemIcon>
+                        <PeopleIcon/>
+                    </StyledListItemIcon>
+                    <ListItemText primary="Communities"/>
+                </ListItemButton>
+            </NavLink>
+            <NavLink to="/photos" className={classes.navLink}>
+                <ListItemButton
+                    selected={selectedIndex === 6}
+                    onClick={(event) => handleListItemClick(event, 6)}
+                >
+                    <StyledListItemIcon>
+                        <PhotoCameraOutlinedIcon/>
+                    </StyledListItemIcon>
+                    <ListItemText primary="Photos"/>
+                </ListItemButton>
+            </NavLink>
+            <NavLink to="/videos" className={classes.navLink}>
+                <ListItemButton
+                    selected={selectedIndex === 7}
+                    onClick={(event) => handleListItemClick(event, 7)}
+                >
+                    <StyledListItemIcon>
+                        <VideoCameraBackOutlinedIcon/>
+                    </StyledListItemIcon>
+                    <ListItemText primary="Viedos"/>
+                </ListItemButton>
+            </NavLink>
+            <NavLink to="/settings" className={classes.navLink}>
+                <ListItemButton
+                    selected={selectedIndex === 8}
+                    onClick={(event) => handleListItemClick(event, 8)}
+                >
+                    <StyledListItemIcon>
+                        <SettingsOutlinedIcon/>
+                    </StyledListItemIcon>
+                    <ListItemText primary="Settings"/>
+                </ListItemButton>
+            </NavLink>
+        </>
     );
 }
+
+const StyledListItemIcon = styled(ListItemIcon)`
+  min-width: 40px;
+  color: #3f51b5;
+`

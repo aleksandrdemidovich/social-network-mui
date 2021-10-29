@@ -1,5 +1,26 @@
 import {PhotosType, UserType} from "../redux/users-reducer";
 
+//---auth
+export type AuthResponseAPIType = {
+    data: {
+        id: number
+        email: string
+        login: string
+    }
+    resultCode: number
+    messages: string[]
+}
+
+//---follow
+export type FollowUnfollowResponseAPIType = {
+    data: {
+
+    }
+    resultCode: number
+    messages: string[]
+}
+
+//---profile
 export type ContactsType = {
     "facebook": string,
     "website":string,
@@ -20,3 +41,11 @@ export type ProfileResponseAPIType = {
     "userId": number,
     "photos": PhotosType
 }
+
+//---users
+export type UsersResponseAPIType = {
+    items:Array<UserType>
+    totalCount: number
+}
+
+

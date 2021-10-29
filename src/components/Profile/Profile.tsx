@@ -14,10 +14,7 @@ import Preloader from "../../common/Preloader/Preloader";
 
 
 
-
-//ToDo
 function Profile(props: ProfilePropsType) {
-
     if(!props.profile) {
         return <Preloader/>
     }

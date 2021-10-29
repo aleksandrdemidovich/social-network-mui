@@ -13,25 +13,22 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import {Avatar, Divider, Drawer, Grid, ListItemIcon, styled} from "@mui/material";
+import {Avatar, Button, Divider, Drawer, Grid, ListItemIcon, styled} from "@mui/material";
 import {Logout, PersonAdd, Settings} from "@mui/icons-material";
+import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import NavBar from "../NavBar/NavBar";
-import { NavLink } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import useClasses from "../../customHookCSS/useClasses";
+import {HeaderPropsType} from "./HeaderContainer";
 
 
-
-interface PrimarySearchAppBarPropsType  {
-    isDarkMode: boolean
-    toggleThemeMode: () => void
-}
-
-const MainHeaderContainer = styled('div')(({ theme }) => ({
+const MainHeaderContainer = styled('div')(({theme}) => ({
     margin: 'auto',
     width: '70%',
     display: 'flex',
-    alignItems:'center',
-    flexDirection:'row',
+    alignItems: 'center',
+    flexDirection: 'row',
     [theme.breakpoints.down('md')]: {
         width: '90%',
     },
@@ -42,22 +39,21 @@ const MainHeaderContainer = styled('div')(({ theme }) => ({
         width: '80%',
     },
 }));
-const styles = (theme:any) =>  ({
-    navLink:{
-        textDecoration:'none', color:'inherit'
+const styles = (theme: any) => ({
+    navLink: {
+        textDecoration: 'none', color: 'inherit'
     }
 });
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
 
-export default function Header(props: PrimarySearchAppBarPropsType) {
+export default function Header(props: HeaderPropsType) {
     const classes = useClasses(styles);
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
     const [state, setState] = React.useState(false);
-
 
     const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent | React.FocusEvent<HTMLDivElement>) => {
         setState(!state)
@@ -66,29 +62,27 @@ export default function Header(props: PrimarySearchAppBarPropsType) {
 
     const list = (anchor: Anchor) => (
         <Box
-            style={{marginTop:'20px', width:'250px'}}
+            style={{marginTop: '20px', width: '250px'}}
             role="presentation"
             onKeyDown={toggleDrawer(false)}
             onClick={toggleDrawer(false)}
         >
-            <Grid container item  direction={"row"} flexWrap={"nowrap"} alignItems={"center"}>
+            <Grid container item direction={"row"} flexWrap={"nowrap"} alignItems={"center"}>
                 <Avatar
                     alt="Remy Sharp"
                     src="https://www.seoclerk.com/pics/319222-1IvI0s1421931178.png"
-                    sx={{width: 60, height: 60, margin:'10px'}}
+                    sx={{width: 60, height: 60, margin: '10px'}}
 
                 />
-                <Grid container item  direction={"column"} flexWrap={"wrap"} >
-                    <Typography variant={"subtitle1"} style={{padding:0}}>Aleksandr Demidovich</Typography>
-            </Grid>
+                <Grid container item direction={"column"} flexWrap={"wrap"}>
+                    <Typography variant={"subtitle1"} style={{padding: 0}}>{props.login}</Typography>
+                </Grid>
             </Grid>
             <Divider/>
             <NavBar/>
         </Box>
     );
 
-
-    const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -99,23 +93,12 @@ export default function Header(props: PrimarySearchAppBarPropsType) {
         setMobileMoreAnchorEl(null);
     };
 
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-        handleMobileMenuClose();
-    };
-
     const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
-    const toggleThemeMode = () => {
-        props.toggleThemeMode()
-    }
 
     const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -134,8 +117,8 @@ export default function Header(props: PrimarySearchAppBarPropsType) {
                     filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                     mt: 1.5,
                     '& .MuiAvatar-root': {
-                        width: 32,
-                        height: 32,
+                        width: 40,
+                        height: 40,
                         ml: -0.5,
                         mr: 1,
                     },
@@ -153,33 +136,26 @@ export default function Header(props: PrimarySearchAppBarPropsType) {
                     },
                 },
             }}
-            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            transformOrigin={{horizontal: 'right', vertical: 'top'}}
+            anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
         >
-            <NavLink to="/profile" className={classes.navLink}>
-            <MenuItem>
-                <Avatar /> Profile
-            </MenuItem>
+            <NavLink to="/" className={classes.navLink}>
+                <MenuItem style={{display:'flex', flexDirection: 'row'}}>
+                    <Avatar/>
+                    <Grid item style={{display:'flex', flexDirection: 'column'}}>{props.login}<Typography variant={"caption"}>Go to Profile</Typography></Grid>
+
+                </MenuItem>
             </NavLink>
-            {/*<MenuItem>*/}
-            {/*    <Avatar /> My account*/}
-            {/*</MenuItem>*/}
-            <Divider />
+            <Divider/>
             <MenuItem>
                 <ListItemIcon>
-                    <PersonAdd fontSize="small" />
-                </ListItemIcon>
-                Add another account
-            </MenuItem>
-            <MenuItem>
-                <ListItemIcon>
-                    <Settings fontSize="small" />
+                    <Settings fontSize="small"/>
                 </ListItemIcon>
                 Settings
             </MenuItem>
             <MenuItem>
                 <ListItemIcon>
-                    <Logout fontSize="small" />
+                    <Logout fontSize="small"/>
                 </ListItemIcon>
                 Logout
             </MenuItem>
@@ -206,7 +182,7 @@ export default function Header(props: PrimarySearchAppBarPropsType) {
             <MenuItem>
                 <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                     <Badge badgeContent={4} color="error">
-                        <MailIcon />
+                        <MailIcon/>
                     </Badge>
                 </IconButton>
                 <p>Messages</p>
@@ -218,7 +194,7 @@ export default function Header(props: PrimarySearchAppBarPropsType) {
                     color="inherit"
                 >
                     <Badge badgeContent={17} color="error">
-                        <NotificationsIcon />
+                        <NotificationsIcon/>
                     </Badge>
                 </IconButton>
                 <p>Notifications</p>
@@ -231,60 +207,51 @@ export default function Header(props: PrimarySearchAppBarPropsType) {
                     aria-haspopup="true"
                     color="inherit"
                 >
-                    <AccountCircle />
+                    <AccountCircle/>
                 </IconButton>
                 <p>Profile</p>
             </MenuItem>
             <Divider/>
-            <MenuItem onClick={toggleThemeMode}>
-                <IconButton color="inherit">
-                    {props.isDarkMode ? <Brightness7Icon/> : <Brightness4Icon/>}
-                </IconButton>
-                <p>{props.isDarkMode ? 'Switch to dark' : 'Switch to light'}</p>
-            </MenuItem>
         </Menu>
     );
 
 
     return (
-            <Box sx={{ flexGrow: 1 }} >
-                <AppBar position="static" style={{boxSizing:'initial'}}>
-                    <MainHeaderContainer >
-                        <IconButton
-                            sx={{ display: { xs: 'block', sm: 'block', md:'none', xl:'none' } }}
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={toggleDrawer(true)}
+        <Box sx={{flexGrow: 1}}>
+            <AppBar position="static" style={{boxSizing: 'initial'}}>
+                <MainHeaderContainer>
+                    <IconButton
+                        sx={{display: {xs: 'block', sm: 'block', md: 'none', xl: 'none'}}}
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={toggleDrawer(true)}
+                    >
+                        <MenuIcon/>
+                        <Drawer
+                            anchor={"left"}
+                            open={state}
+                            onClose={toggleDrawer(false)}
                         >
-                            <MenuIcon />
-                            <Drawer
-
-                                anchor={"left"}
-                                open={state}
-                                onClose={toggleDrawer(false)}
-                            >
-                                {list('left')}
-                            </Drawer>
-                        </IconButton>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{ display: { xs: 'none', sm: 'block' } }}
-                        >
-                            Social Network
-                        </Typography>
-
-                        <Box sx={{ flexGrow: 1 }} />
-                        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                            <IconButton color="inherit" onClick={toggleThemeMode}>
-                                {props.isDarkMode ? <Brightness7Icon/> : <Brightness4Icon/>}
-                            </IconButton>
+                            {list('left')}
+                        </Drawer>
+                    </IconButton>
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        sx={{display: {xs: 'none', sm: 'block'}}}
+                    >
+                        Social Network
+                    </Typography>
+                    <Box sx={{flexGrow: 1}}/>
+                    {/*right header button*/}
+                    {props.isAuth ?
+                        <Box sx={{display: {xs: 'none', md: 'flex'}}}>
                             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                                 <Badge badgeContent={4} color="error">
-                                    <MailIcon />
+                                    <MailIcon/>
                                 </Badge>
                             </IconButton>
                             <IconButton
@@ -293,38 +260,46 @@ export default function Header(props: PrimarySearchAppBarPropsType) {
                                 color="inherit"
                             >
                                 <Badge badgeContent={17} color="error">
-                                    <NotificationsIcon />
+                                    <NotificationsIcon/>
                                 </Badge>
                             </IconButton>
                             <IconButton
                                 size="large"
                                 edge="end"
-                                aria-label="account of current user"
                                 aria-controls={menuId}
-                                aria-haspopup="true"
                                 onClick={handleProfileMenuOpen}
                                 color="inherit"
                             >
-                                <AccountCircle />
+                                <Typography variant={"body2"}>
+                                    {props.login}
+                                </Typography>
+                                <AccountCircle/>
                             </IconButton>
 
                         </Box>
-                        <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                            <IconButton
-                                size="large"
-                                aria-label="show more"
-                                aria-controls={mobileMenuId}
-                                aria-haspopup="true"
-                                onClick={handleMobileMenuOpen}
-                                color="inherit"
-                            >
-                                <MoreIcon />
-                            </IconButton>
-                        </Box>
-                    </MainHeaderContainer>
-                </AppBar>
-                {renderMobileMenu}
-                {renderMenu}
-            </Box>
+                        : <NavLink to={'/login'} className={classes.navLink}>
+                            <Button variant={"text"}
+                                    color={"primary"}
+                                    size={"large"}>
+                                Login
+                            </Button>
+                        </NavLink>}
+                    <Box sx={{display: {xs: 'flex', md: 'none'}}}>
+                        <IconButton
+                            size="large"
+                            aria-label="show more"
+                            aria-controls={mobileMenuId}
+                            aria-haspopup="true"
+                            onClick={handleMobileMenuOpen}
+                            color="inherit"
+                        >
+                            <MoreIcon/>
+                        </IconButton>
+                    </Box>
+                </MainHeaderContainer>
+            </AppBar>
+            {renderMobileMenu}
+            {renderMenu}
+        </Box>
     );
 }

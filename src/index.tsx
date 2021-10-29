@@ -6,9 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
 import {Provider} from 'react-redux';
 import store from './redux/redux-store'
+import axios from "axios";
 
-
-
+axios.defaults.headers.common ["API-KEY"] = "cf750a83-7c21-4e27-915c-0dade0a73893"
 
 ReactDOM.render(
     <React.StrictMode>

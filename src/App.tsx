@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
-import Header from "./components/Header/AppBar";
 import {
-    Alert,
     createTheme,
-    CssBaseline, Grid,
+    CssBaseline, Grid, IconButton,
     PaletteOptions,
-    Paper, Snackbar,
+    Paper,
     styled,
     ThemeProvider,
 } from "@mui/material";
@@ -23,6 +21,10 @@ import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 import useClasses from "./customHookCSS/useClasses";
 import ProfileContainer from "./components/Profile/ProfileContainer";
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import HeaderContainer from "./components/Header/HeaderContainer";
+import Login from "./components/Login/Login";
 
 
 const lightTheme = createTheme({
@@ -103,10 +105,9 @@ const styles = (theme: any) => ({
 
 
 function App() {
-
-    const [isDarkMode, setDarkMode] = useState(false)
-
     const classes = useClasses(styles);
+
+    const [isDarkMode, setDarkMode] = useState(true)
 
     const toggleThemeMode = () => {
         setDarkMode(!isDarkMode)
@@ -116,16 +117,12 @@ function App() {
         <ThemeProvider theme={isDarkMode ? darkTheme :  lightTheme}>
             <CssBaseline/>
             <div className="App">
-                <Header
-                    isDarkMode={isDarkMode}
-                    toggleThemeMode={toggleThemeMode}/>
+                <HeaderContainer/>
                 <MainContentContainer>
                     <Grid item className={classes.rootContainer}>
                         <Grid item className={classes.navigationContainer}>
                             <Grid item>
-                                <Paper elevation={4}>
                                     <NavBar/>
-                                </Paper>
                             </Grid>
                         </Grid>
                         <Switch>
@@ -152,10 +149,13 @@ function App() {
                             <Route path='/photos' render={() => <Photos/>}/>
                             <Route path='/videos' render={() => <Videos/>}/>
                             <Route path='/settings' render={() => <Settings/>}/>
+                            <Route path='/login' render={() => <Login/>}/>
                         </Switch>
                     </Grid>
                 </MainContentContainer>
-
+                <ModeButton aria-label="Switcher Mode" size={"large"} onClick={toggleThemeMode}>
+                    {isDarkMode ? <LightModeIcon color={"warning"}/> : <DarkModeIcon/>}
+                </ModeButton>
             </div>
         </ThemeProvider>
 
@@ -163,3 +163,9 @@ function App() {
 }
 
 export default App;
+
+const ModeButton = styled(IconButton)`
+  position: absolute; //sticky
+  bottom: 0;
+  left: 97%;
+`

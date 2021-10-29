@@ -13,17 +13,20 @@ import defaultUserPhoto from '../../assets/images/userAvatar.jpg'
 import {UserType} from "../../redux/users-reducer";
 import {NavLink} from 'react-router-dom';
 import Preloader from "../../common/Preloader/Preloader";
+import {followAPI} from "../../API/api";
 
 
 type UsersPropsType = {
     users: Array<UserType>
-    follow: (userId: string) => void
-    unfollow: (userId: string) => void
+    follow: (userId: number) => void
+    unfollow: (userId: number) => void
     totalUsersCount: number
     pageSize: number
     currentPage: number
-    handleChange: (event: React.ChangeEvent<unknown>, pageNumber: number) => void
+    handlePageChange: (event: React.ChangeEvent<unknown>, pageNumber: number) => void
     isFetching: boolean
+    toggleFollowingProgress: (isProgress: boolean, userId:number) => void
+    followingInProgress: number[]
 }
 
 function Users(props: UsersPropsType) {
@@ -44,10 +47,29 @@ function Users(props: UsersPropsType) {
                 <Typography variant={"body2"}>{'u.location.country'}</Typography>
                 <Typography variant={"body2"} style={{paddingBottom: '15px'}}>{'u.location.city'}</Typography>
                 {u.followed ?
-                    <Button variant={"contained"} size={"small"} color={"secondary"}
-                            onClick={() => props.unfollow(u.id)}>Unfollow</Button>
-                    : <Button variant={"contained"} size={"small"} color={"success"}
-                              onClick={() => props.follow(u.id)}>Follow</Button>}
+                    <Button variant={"contained"} disabled={props.followingInProgress.some(id => id === u.id)}  size={"small"} color={"secondary"}
+                            onClick={() => {
+                                props.toggleFollowingProgress(true, u.id)
+                                followAPI.unfollow(u.id)
+                                    .then(response => {
+                                        if (response.data.resultCode === 0) {
+                                            props.unfollow(u.id)
+                                        }
+                                        props.toggleFollowingProgress(false, u.id)
+                                    });
+
+                            }}>Unfollow</Button>
+                    : <Button variant={"contained"} disabled={props.followingInProgress.some(id => id === u.id)} size={"small"} color={"success"}
+                              onClick={() => {
+                                  props.toggleFollowingProgress(true, u.id)
+                                  followAPI.follow(u.id)
+                                      .then(response => {
+                                          if (response.data.resultCode === 0) {
+                                              props.follow(u.id)
+                                          }
+                                          props.toggleFollowingProgress(false, u.id)
+                                      });
+                              }}>Follow</Button>}
             </Grid>
         </Paper>
     })
@@ -79,13 +101,14 @@ function Users(props: UsersPropsType) {
                     </NativeSelect>
                 </Grid>
             </Grid>
-            <Grid container item direction={"row"} wrap={"wrap"} justifyContent={"flex-start"} style={{marginTop: '10px', marginLeft: '20px'}}>
+            <Grid container item direction={"row"} wrap={"wrap"} justifyContent={"flex-start"}
+                  style={{marginTop: '10px', marginLeft: '20px'}}>
                 {props.isFetching ? <Preloader/> : usersElement}
             </Grid>
             <Grid item flexWrap={"nowrap"} margin={"auto"}>
                 <Pagination count={pagesCount}
                             page={props.currentPage}
-                            onChange={props.handleChange}
+                            onChange={props.handlePageChange}
                             variant="outlined"
                             shape="rounded"
                             color={"primary"}/>

@@ -20,18 +20,20 @@ const NoPostsContainer = styled(Grid)`
   align-items: stretch;
 
   & svg {
-    color:gray;
+    color: gray;
     font-size: 130px;
-  } ;
+  }
+;
 `;
 
 function Posts(props: PostsPropsType) {
 
 
     const postsElement = props.posts.map(p =>
-        <PostContainer container item>
+        <PostContainer container item key={p.id}>
             <Paper elevation={4}>
-                <Post id={p.id}
+                <Post key={p.id}
+                      id={p.id}
                       message={p.message}
                       likeCount={p.likeCount}
                       deletePost={props.deletePost}
@@ -49,8 +51,9 @@ function Posts(props: PostsPropsType) {
                             <Typography>No post yet</Typography>
                         </Grid>
                         <Divider/>
-                        <Grid item style={{padding: '20px'}} display={"flex"} flexDirection={"column"} alignItems={"center"}>
-                            <DescriptionOutlinedIcon style={{marginBottom:'20px'}}/>
+                        <Grid item style={{padding: '20px'}} display={"flex"} flexDirection={"column"}
+                              alignItems={"center"}>
+                            <DescriptionOutlinedIcon style={{marginBottom: '20px'}}/>
                             <Typography variant={"body2"}>There are no posts here yet</Typography>
                         </Grid>
                     </Paper>
