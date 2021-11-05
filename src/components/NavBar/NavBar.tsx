@@ -13,7 +13,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import VideoCameraBackOutlinedIcon from '@mui/icons-material/VideoCameraBackOutlined';
 import useClasses from "../../customHookCSS/useClasses";
-import {IconButton, styled} from "@mui/material";
+import {styled} from "@mui/material";
 
 
 const styles = (theme: any) => ({

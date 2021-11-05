@@ -8,6 +8,7 @@ import DialogsHeader from "./Headers/DialogsHeader";
 import {DialogsPropsType} from "./DialogsContainer";
 import UserDialogElement from "./UserDialogElement/UserDialogElement";
 import {styled} from "@mui/material/styles";
+import {Redirect} from "react-router-dom";
 
 const RootContainer = styled(Grid)({
     height: '90vh ',
@@ -33,6 +34,8 @@ function Dialogs(props: DialogsPropsType) {
                                      deleteDialog={props.deleteDialog}
             />
         );
+
+    if(!props.isAuth) return <Redirect to={'/login'}/>
 
     return (
         <Grid item xs={12} md={12} lg={9}>

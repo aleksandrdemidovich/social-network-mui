@@ -25,6 +25,8 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
+import {useSelector} from "react-redux";
+import {AppStateType} from "./redux/redux-store";
 
 
 const lightTheme = createTheme({
@@ -96,7 +98,7 @@ const styles = (theme: any) => ({
             display: 'none'
         },
         [theme.breakpoints.up('md')]: {
-            display: 'flex'
+            display: 'flex',
         }
     },
 
@@ -113,6 +115,8 @@ function App() {
         setDarkMode(!isDarkMode)
     }
 
+    // const isAuth = useSelector<AppStateType, boolean>(state => state.auth.isAuth )
+
     return (
         <ThemeProvider theme={isDarkMode ? darkTheme :  lightTheme}>
             <CssBaseline/>
@@ -120,9 +124,9 @@ function App() {
                 <HeaderContainer/>
                 <MainContentContainer>
                     <Grid item className={classes.rootContainer}>
-                        <Grid item className={classes.navigationContainer}>
+                       <Grid item className={classes.navigationContainer}>
                             <Grid item>
-                                    <NavBar/>
+                                <NavBar/>
                             </Grid>
                         </Grid>
                         <Switch>
@@ -165,7 +169,7 @@ function App() {
 export default App;
 
 const ModeButton = styled(IconButton)`
-  position: absolute; //sticky
+  position: sticky; //sticky
   bottom: 0;
   left: 97%;
 `

@@ -2,8 +2,8 @@ import React from 'react';
 import {AppStateType} from "../../../../redux/redux-store";
 import {connect} from "react-redux";
 import {
-    follow, setUsers,
-    unfollow,
+    followSuccess, setUsers,
+    unfollowSuccess,
     UserType
 } from "../../../../redux/users-reducer";
 import Suggestions from "./Suggestions";
@@ -49,4 +49,4 @@ class SuggestionsContainer extends React.Component<SuggestionsPropsType> {
 }
 
 
-export default connect(mapStateToProps, {follow, unfollow, setUsers})(SuggestionsContainer)
+export default connect(mapStateToProps, {follow: followSuccess, unfollow: unfollowSuccess, setUsers})(SuggestionsContainer)

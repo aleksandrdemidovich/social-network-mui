@@ -19,17 +19,19 @@ export const usersAPI = {
     getUsers: (currentPage: number, pageSize: number) => {
         return instance.get<UsersResponseAPIType>(`users?page=${currentPage}&count=${pageSize}`)
             .then(response => response.data)
-    }
-}
-
-export const followAPI = {
+    },
     follow: (id: number) => {
         return instance.post<FollowUnfollowResponseAPIType>(`follow/${id}`)
     },
     unfollow: (id: number) => {
         return instance.delete<FollowUnfollowResponseAPIType>(`follow/${id}`)
+    },
+    getProfile: (userId: string) => {
+        return instance.get<ProfileResponseAPIType>(`profile/${userId}`)
+            .then(response => response.data)
     }
 }
+
 
 export const authAPI = {
     me: () => {
@@ -38,12 +40,6 @@ export const authAPI = {
     }
 }
 
-export const profileAPI = {
-    getProfile: (userId: string) => {
-        return instance.get<ProfileResponseAPIType>(`profile/${userId}`)
-            .then(response => response.data)
-    }
-}
 
 
 

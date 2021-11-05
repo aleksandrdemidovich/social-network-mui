@@ -1,5 +1,7 @@
 import {v1} from "uuid";
-import {PhotosType} from "./users-reducer";
+import {PhotosType, toggleIsFetching} from "./users-reducer";
+import {Dispatch} from "redux";
+import {usersAPI} from "../API/api";
 
 const ADD_POST = "ADD-POST"
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
@@ -130,4 +132,15 @@ export const setUserProfile = (profile: ProfileType) => {
         type: SET_USER_PROFILE,
         profile
     } as const
+}
+
+//thunk
+export const getUserProfile = (userId: string) => {
+    return (dispatch: Dispatch) => {
+        dispatch(toggleIsFetching(true))
+        usersAPI.getProfile(userId)
+            .then(data => {
+                dispatch(setUserProfile(data))
+            });
+    }
 }

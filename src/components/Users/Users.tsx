@@ -13,7 +13,6 @@ import defaultUserPhoto from '../../assets/images/userAvatar.jpg'
 import {UserType} from "../../redux/users-reducer";
 import {NavLink} from 'react-router-dom';
 import Preloader from "../../common/Preloader/Preloader";
-import {followAPI} from "../../API/api";
 
 
 type UsersPropsType = {
@@ -25,7 +24,6 @@ type UsersPropsType = {
     currentPage: number
     handlePageChange: (event: React.ChangeEvent<unknown>, pageNumber: number) => void
     isFetching: boolean
-    toggleFollowingProgress: (isProgress: boolean, userId:number) => void
     followingInProgress: number[]
 }
 
@@ -49,26 +47,11 @@ function Users(props: UsersPropsType) {
                 {u.followed ?
                     <Button variant={"contained"} disabled={props.followingInProgress.some(id => id === u.id)}  size={"small"} color={"secondary"}
                             onClick={() => {
-                                props.toggleFollowingProgress(true, u.id)
-                                followAPI.unfollow(u.id)
-                                    .then(response => {
-                                        if (response.data.resultCode === 0) {
-                                            props.unfollow(u.id)
-                                        }
-                                        props.toggleFollowingProgress(false, u.id)
-                                    });
-
+                                props.unfollow(u.id)
                             }}>Unfollow</Button>
                     : <Button variant={"contained"} disabled={props.followingInProgress.some(id => id === u.id)} size={"small"} color={"success"}
                               onClick={() => {
-                                  props.toggleFollowingProgress(true, u.id)
-                                  followAPI.follow(u.id)
-                                      .then(response => {
-                                          if (response.data.resultCode === 0) {
-                                              props.follow(u.id)
-                                          }
-                                          props.toggleFollowingProgress(false, u.id)
-                                      });
+                                  props.follow(u.id)
                               }}>Follow</Button>}
             </Grid>
         </Paper>
