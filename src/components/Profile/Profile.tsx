@@ -11,7 +11,7 @@ import PostsContainer from "./RightColumn/Posts/PostsContainer";
 import SuggestionsContainer from "./LeftColumn/Suggestions/SuggestionsContainer";
 import {ProfilePropsType} from "./ProfileContainer";
 import Preloader from "../../common/Preloader/Preloader";
-import {Redirect} from "react-router-dom";
+
 
 
 

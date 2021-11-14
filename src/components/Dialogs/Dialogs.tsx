@@ -35,7 +35,7 @@ function Dialogs(props: DialogsPropsType) {
             />
         );
 
-    if(!props.isAuth) return <Redirect to={'/login'}/>
+    // if(!props.isAuth) return <Redirect to={'/login'}/>
 
     return (
         <Grid item xs={12} md={12} lg={9}>

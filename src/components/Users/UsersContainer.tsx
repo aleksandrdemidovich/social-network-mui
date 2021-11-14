@@ -10,6 +10,8 @@ import {
     UserType
 } from "../../redux/users-reducer";
 import Users from "./Users";
+import {compose} from "redux";
+import {withAuthRedirect} from "../../hoc/WithAuthRedirect";
 
 type mapStateToPropsType = {
     users: Array<UserType>
@@ -65,9 +67,13 @@ class UsersContainer extends React.Component<UsersPropsType> {
 }
 
 
-export default connect(mapStateToProps, {
-    follow, unfollow, setCurrentPage, getUsers
-})(UsersContainer)
 
+
+export default compose<React.ComponentType>(
+    // withAuthRedirect,
+    connect(mapStateToProps, {
+    follow, unfollow, setCurrentPage, getUsers
+})
+)(UsersContainer)
 
 

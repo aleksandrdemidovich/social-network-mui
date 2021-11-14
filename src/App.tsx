@@ -97,8 +97,10 @@ const styles = (theme: any) => ({
         [theme.breakpoints.between('xs', "md")]: {
             display: 'none'
         },
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.only('md')]: {
             display: 'flex',
+            width: '60px',
+            overflow: 'hidden',
         }
     },
 
@@ -133,7 +135,7 @@ function App() {
                             <Route exact path="/">
                                 <Redirect to="/profile"/>
                             </Route>
-                            <Route path='/profile/:userId?' render={() => <ProfileContainer/>}/>
+                            <Route path='/profile/:userId?' render={() => <ProfileContainer />}/>
                             <Route exact path='/dialogs' render={() =>
                                 <Grid container item spacing={2} flexDirection={"row"} flexWrap={"nowrap"}>
                                     <DialogsContainer/>
