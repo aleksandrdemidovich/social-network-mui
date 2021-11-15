@@ -5,7 +5,7 @@ import {
     PaletteOptions,
     Paper,
     styled,
-    ThemeProvider,
+    ThemeProvider, Tooltip,
 } from "@mui/material";
 import {Redirect, Route, Switch} from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
@@ -160,7 +160,9 @@ function App() {
                     </Grid>
                 </MainContentContainer>
                 <ModeButton aria-label="Switcher Mode" size={"large"} onClick={toggleThemeMode}>
-                    {isDarkMode ? <LightModeIcon color={"warning"}/> : <DarkModeIcon/>}
+                    {isDarkMode
+                        ? <Tooltip title="Switch to light"><LightModeIcon color={"warning"}/></Tooltip>
+                        : <Tooltip title="Switch to dark"><DarkModeIcon/></Tooltip> }
                 </ModeButton>
             </div>
         </ThemeProvider>

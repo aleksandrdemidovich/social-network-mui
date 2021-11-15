@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LanguageIcon from '@mui/icons-material/Language';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -6,7 +6,7 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import {Avatar, AvatarProps, Divider, Grid, IconButton, styled} from "@mui/material";
+import {Avatar, AvatarProps, Badge, BadgeProps, Divider, Grid, IconButton, styled, Tooltip} from "@mui/material";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -14,17 +14,28 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import useClasses from "../../../../customHookCSS/useClasses";
 import {ProfileType} from "../../../../redux/profile-reducer";
 import defaultUserAvatar from '../../../../assets/images/userAvatar.jpg'
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 const CustomAvatar = styled(Avatar)<AvatarProps>(({theme}) => ({
-    width: 200,
-    height: 200,
+    width: 250,
+    height: 250,
     margin: 'auto',
     marginTop: '-25px',
     border: '3px solid transparent',
-    '&:hover': {
-        border: `3px solid #3f51b5`
-    }
+    // '&:hover': {
+    //     border: `3px solid #3f51b5`,
+    // }
 }));
+
+const StyledBadge = styled(Badge)<BadgeProps>(({theme}) => ({
+    '& .MuiBadge-badge': {
+        right: 27,
+        top: 25,
+        padding: '0 4px',
+        font: 'italic 0.9em "Fira Sans", serif'
+    },
+}));
+
 const styles = (theme: any) => ({
     editButton: {
         float: 'right', display: 'inline'
@@ -63,20 +74,42 @@ type ProfileInfoPropsType = {
 function ProfileInfo(props: ProfileInfoPropsType) {
     const classes = useClasses(styles);
 
+    const [invisible, setInvisible] = useState(true)
 
     return (
         <Grid container item direction={"column"}>
             <Grid item>
-                <IconButton className={classes.editButton} color={"primary"}>
-                    <EditOutlinedIcon/>
-                </IconButton>
+                <Tooltip title="Change your social networks links">
+                    <IconButton className={classes.editButton} color={"primary"}>
+                        <EditOutlinedIcon/>
+                    </IconButton>
+                </Tooltip>
             </Grid>
-            <Grid item>
-                <CustomAvatar src={props.profile.photos.large ? props.profile.photos.large  : defaultUserAvatar }/>
+            <Grid item style={{margin: 'auto'}}>
+                {/*<CustomAvatar src={props.profile.photos.large ? props.profile.photos.large  : defaultUserAvatar }/>*/}
+
+                <StyledBadge
+                    badgeContent={
+                        <Tooltip title="Update photo">
+                            <IconButton style={{color: '#3f51b5'}} aria-label={'new photo'}>
+                                <CameraAltIcon fontSize={"large"}/>
+                            </IconButton>
+                        </Tooltip>
+                    }
+                    invisible={invisible}
+                    onMouseEnter={() => setInvisible(false)}
+                    onMouseLeave={() => setInvisible(true)}
+                    overlap="circular"
+                    anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+                >
+                    <CustomAvatar src={props.profile.photos.large ? props.profile.photos.large : defaultUserAvatar}/>
+                </StyledBadge>
+
+
             </Grid>
             <Grid item>
                 <ListItemButton>
-                    <StyledListItemIcon >
+                    <StyledListItemIcon>
                         <FacebookIcon fontSize={"large"} className={classes.profileFacebookIcon}/>
                     </StyledListItemIcon>
                     <ListItemText primary="Facebook"/>

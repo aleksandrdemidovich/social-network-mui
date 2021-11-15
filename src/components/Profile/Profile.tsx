@@ -13,13 +13,10 @@ import {ProfilePropsType} from "./ProfileContainer";
 import Preloader from "../../common/Preloader/Preloader";
 
 
-
-
 function Profile(props: ProfilePropsType) {
-    if(!props.profile) {
+    if (!props.profile) {
         return <Preloader/>
     }
-
 
 
     return (
@@ -28,7 +25,7 @@ function Profile(props: ProfilePropsType) {
                   direction={"column"}
                   md={4} lg={5} xl={4}
                   item
-                  spacing={4} >
+                  spacing={4}>
                 <Grid item>
                     <Paper elevation={4}>
                         <ProfileInfo profile={props.profile}/>
@@ -48,7 +45,9 @@ function Profile(props: ProfilePropsType) {
                   flexWrap={"nowrap"}>
                 <Grid item>
                     <Paper elevation={4}>
-                        <UserInfo profile={props.profile}/>
+                        <UserInfo profile={props.profile}
+                                  status={props.status}
+                                  updateStatus={props.updateStatus}/>
                     </Paper>
                 </Grid>
                 <Grid item>

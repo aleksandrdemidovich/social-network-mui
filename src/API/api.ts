@@ -26,8 +26,21 @@ export const usersAPI = {
     unfollow: (id: number) => {
         return instance.delete<FollowUnfollowResponseAPIType>(`follow/${id}`)
     },
+}
+
+export const profileAPI = {
     getProfile: (userId: string) => {
         return instance.get<ProfileResponseAPIType>(`profile/${userId}`)
+            .then(response => response.data)
+    },
+    getStatus: (userId: string) => {
+        //todo type
+        return instance.get<any>(`profile/status/${userId}`)
+            .then(response => response.data)
+    },
+    updateStatus: (status: string) => {
+        //todo type
+        return instance.put<any>(`profile/status`, {status})
             .then(response => response.data)
     }
 }

@@ -1,12 +1,13 @@
 import {v1} from "uuid";
 import {PhotosType, toggleIsFetching} from "./users-reducer";
 import {Dispatch} from "redux";
-import {usersAPI} from "../API/api";
+import {profileAPI, usersAPI} from "../API/api";
 
 const ADD_POST = "ADD-POST"
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
 const DELETE_POST = "DELETE-POST"
 const SET_USER_PROFILE = "SET-USER-PROFILE"
+const SET_STATUS = "SET-STATUS"
 
 export type PostType = {
     id: string
@@ -36,6 +37,7 @@ export type ProfilePageType = {
     posts: Array<PostType>
     newPostText?: string
     profile: ProfileType
+    status: string
 }
 
 export type InitialStateType = typeof initialState
@@ -71,7 +73,8 @@ const initialState: ProfilePageType = {
             large: null,
             small: null
         }
-    } as ProfileType
+    } as ProfileType,
+    status: ''
 }
 
 
@@ -94,13 +97,20 @@ export const profileReducer = (state:InitialStateType = initialState, action: Ac
         case "SET-USER-PROFILE":{
             return {...state, profile:action.profile}
         }
+        case "SET-STATUS":{
+            return {...state, status:action.status}
+        }
         default :
             return state
     }
 
 }
 
-type ActionsType = AddPostActionType | UpdateNewPostTextActionType | DeletePostActionType | setUserProfileActionType
+type ActionsType = AddPostActionType
+    | UpdateNewPostTextActionType
+    | DeletePostActionType
+    | setUserProfileActionType
+    | setUserStatusActionType
 
 export type AddPostActionType = ReturnType<typeof addPostActionCreator>
 export const addPostActionCreator = (postText: string)=> {
@@ -134,13 +144,41 @@ export const setUserProfile = (profile: ProfileType) => {
     } as const
 }
 
+export type setUserStatusActionType = ReturnType<typeof setStatus>
+export const setStatus = (status: string) => {
+    return {
+        type: SET_STATUS,
+        status
+    } as const
+}
+
 //thunk
 export const getUserProfile = (userId: string) => {
     return (dispatch: Dispatch) => {
         dispatch(toggleIsFetching(true))
-        usersAPI.getProfile(userId)
+        profileAPI.getProfile(userId)
             .then(data => {
                 dispatch(setUserProfile(data))
+            });
+    }
+}
+
+export const getStatus = (userId: string) => {
+    return (dispatch: Dispatch) => {
+        profileAPI.getStatus(userId)
+            .then(data => {
+                dispatch(setStatus(data))
+            });
+    }
+}
+
+export const updateStatus = (status: string) => {
+    return (dispatch: Dispatch) => {
+        profileAPI.updateStatus(status)
+            .then(data => {
+                if(data.resultCode === 0) {
+                    dispatch(setStatus(status))
+                }
             });
     }
 }

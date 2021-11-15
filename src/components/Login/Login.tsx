@@ -1,8 +1,70 @@
 import * as React from 'react';
-import {Button, Checkbox, FormControlLabel, FormGroup, Grid, Paper, styled, TextField, Typography} from "@mui/material";
+import {
+    Button,
+    Checkbox,
+    FormControlLabel,
+    Grid,
+    Paper,
+    styled,
+    TextField,
+    Typography
+} from "@mui/material";
+import {InjectedFormProps, reduxForm, Field} from "redux-form";
+
+type FormDataType = {
+    login: string
+    password: string
+    rememberMe: boolean
+}
+
+//@ts-ignore
+const renderTextField = ({label, input, meta: {touched, invalid, error}, ...custom}) => (
+    <TextField
+        label={label}
+        error={touched && invalid}
+        helperText={touched && error}
+        fullWidth
+        {...input}
+        {...custom}
+    />
+)
+
+//@ts-ignore
+const renderCheckbox = ({input, label}) => (
+    <FormControlLabel
+        control={
+            <Checkbox
+                checked={!!input.value}
+                onChange={input.onChange}
+            />
+        }
+        label={label}
+    />
+)
 
 
-export default function Login() {
+const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props: any) => {
+    return (
+        <form onSubmit={props.handleSubmit}>
+            <Field fullWidth name={'login'} label="Email" variant="outlined" component={renderTextField}/>
+            <Field fullWidth name={'password'} type={"password"} label="Password" variant="outlined"
+                   component={renderTextField}/>
+            <Grid item flexWrap={'wrap'}>
+                <Field  name={'rememberMe'} label='Remember me' component={renderCheckbox}/>
+                <Button variant={"contained"} type={"submit"} color={"primary"}>Sign in</Button>
+            </Grid>
+
+        </form>
+    );
+}
+
+const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
+
+const Login = () => {
+    const onSubmit = (formData: FormDataType) => {
+        console.log(formData)
+    }
+
     return (
         <RootContentContainer>
             <LogInInfoContainer elevation={4}>
@@ -16,20 +78,13 @@ export default function Login() {
                 </ul>
             </LogInInfoContainer>
             <LogInFormContainer elevation={4}>
-                <form action="">
-                    <TextField fullWidth id="outlined-basic" label="Email" variant="outlined"/>
-                    <TextField fullWidth id="outlined-basic" type={"password"} label="Password" variant="outlined"/>
-                    <Grid item flexWrap={'wrap'}>
-                        <FormGroup>
-                            <FormControlLabel control={<Checkbox defaultChecked/>} label="Remember me"/>
-                        </FormGroup>
-                        <Button variant={"contained"} color={"primary"}>Sign in</Button>
-                    </Grid>
-                </form>
+                <LoginReduxForm onSubmit={onSubmit}/>
             </LogInFormContainer>
         </RootContentContainer>
     );
 }
+
+export default Login;
 
 const RootContentContainer = styled(Paper)`
   display: flex;
@@ -38,6 +93,12 @@ const RootContentContainer = styled(Paper)`
   width: 100%;
   margin: 50px auto;
   padding: 50px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+  }
 `
 const LogInInfoContainer = styled(Paper)`
   display: flex;
@@ -47,6 +108,11 @@ const LogInInfoContainer = styled(Paper)`
 
   .MuiTypography-subtitle2 {
     margin-top: 20px;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-bottom: 20px;
   }
 `
 const LogInFormContainer = styled(Paper)`
@@ -63,5 +129,9 @@ const LogInFormContainer = styled(Paper)`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
   }
 `
