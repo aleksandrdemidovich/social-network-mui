@@ -10,6 +10,7 @@ import {
     Typography
 } from "@mui/material";
 import {InjectedFormProps, reduxForm, Field} from "redux-form";
+import {requiredField} from "../../utils/validators/validators";
 
 type FormDataType = {
     login: string
@@ -24,6 +25,7 @@ const renderTextField = ({label, input, meta: {touched, invalid, error}, ...cust
         error={touched && invalid}
         helperText={touched && error}
         fullWidth
+        variant="outlined"
         {...input}
         {...custom}
     />
@@ -46,11 +48,19 @@ const renderCheckbox = ({input, label}) => (
 const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props: any) => {
     return (
         <form onSubmit={props.handleSubmit}>
-            <Field fullWidth name={'login'} label="Email" variant="outlined" component={renderTextField}/>
-            <Field fullWidth name={'password'} type={"password"} label="Password" variant="outlined"
-                   component={renderTextField}/>
+            <Field name={'login'}
+                   label="Email"
+                   component={renderTextField}
+                   validate={[requiredField]}
+            />
+            <Field name={'password'}
+                   type={"password"}
+                   label="Password"
+                   component={renderTextField}
+                   validate={[requiredField]}
+            />
             <Grid item flexWrap={'wrap'}>
-                <Field  name={'rememberMe'} label='Remember me' component={renderCheckbox}/>
+                <Field name={'rememberMe'} label='Remember me' component={renderCheckbox}/>
                 <Button variant={"contained"} type={"submit"} color={"primary"}>Sign in</Button>
             </Grid>
 

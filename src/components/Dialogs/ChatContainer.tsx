@@ -3,7 +3,6 @@ import {
     DeleteMessagesCreator,
     DialogPageType,
     sendMessageCreator,
-    UpdateNewMessTextCreator
 } from "../../redux/dialogs-reducer";
 
 import {connect} from "react-redux";
@@ -17,7 +16,6 @@ type mapStateToPropsType = {
 }
 
 type mapDispatchPropsType = {
-    onChangeMess: (text: string) => void
     sendMessage: (newMessText: string) => void
     deleteMessages:(selectedMess: string[]) => void
 }
@@ -31,10 +29,6 @@ const mapStateToProps = (state: AppStateType) : mapStateToPropsType => {
 }
 const mapDispatchToProps = (dispatch: Dispatch):mapDispatchPropsType => {
     return {
-        onChangeMess: (text: string) => {
-            dispatch(UpdateNewMessTextCreator(text))
-
-        },
         sendMessage: (newMessText: string) => {
            dispatch(sendMessageCreator(newMessText))
         },

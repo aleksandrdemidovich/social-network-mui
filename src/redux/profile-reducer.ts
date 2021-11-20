@@ -1,10 +1,9 @@
 import {v1} from "uuid";
 import {PhotosType, toggleIsFetching} from "./users-reducer";
 import {Dispatch} from "redux";
-import {profileAPI, usersAPI} from "../API/api";
+import {profileAPI} from "../API/api";
 
 const ADD_POST = "ADD-POST"
-const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
 const DELETE_POST = "DELETE-POST"
 const SET_USER_PROFILE = "SET-USER-PROFILE"
 const SET_STATUS = "SET-STATUS"
@@ -35,7 +34,6 @@ export type ProfileType = {
 }
 export type ProfilePageType = {
     posts: Array<PostType>
-    newPostText?: string
     profile: ProfileType
     status: string
 }
@@ -52,7 +50,6 @@ const initialState: ProfilePageType = {
         },
         {id: v1(), message: 'Da da ', likeCount: 99},
     ] as PostType[],
-    newPostText: '',
     profile: {
         aboutMe: '',
         contacts: {
@@ -83,14 +80,14 @@ export const profileReducer = (state:InitialStateType = initialState, action: Ac
         case "ADD-POST": {
             let newPost = {
                 id: v1(),
-                message: action.newPostText!,
+                message: action.newPostText,
                 likeCount: 0
             }
-            return {...state, posts:[newPost,...state.posts], newPostText:''}
+            return {...state, posts:[newPost,...state.posts]}
         }
-        case "UPDATE-NEW-POST-TEXT": {
-            return{...state, newPostText: action.newText}
-        }
+        // case "UPDATE-NEW-POST-TEXT": {
+        //     return{...state, newPostText: action.newText}
+        // }
         case "DELETE-POST":{
             return {...state, posts:[...state.posts.filter(p => p.id !== action.postID)]}
         }
@@ -107,24 +104,15 @@ export const profileReducer = (state:InitialStateType = initialState, action: Ac
 }
 
 type ActionsType = AddPostActionType
-    | UpdateNewPostTextActionType
     | DeletePostActionType
     | setUserProfileActionType
     | setUserStatusActionType
 
 export type AddPostActionType = ReturnType<typeof addPostActionCreator>
-export const addPostActionCreator = (postText: string)=> {
+export const addPostActionCreator = (newPostText: string)=> {
     return {
         type: ADD_POST,
-        newPostText: postText
-    } as const
-}
-
-export type UpdateNewPostTextActionType = ReturnType<typeof UpdateNewPostTextCreator>
-export const UpdateNewPostTextCreator = (newText: string) => {
-    return {
-        type: UPDATE_NEW_POST_TEXT,
-        newText: newText
+        newPostText
     } as const
 }
 

@@ -6,6 +6,8 @@ import {styled} from "@mui/material/styles";
 import {DialogsPropsType} from "./ChatContainer";
 import ReceivedMessage from "./Messages/ReceivedMessage";
 import ChatHeader from "./Headers/ChatHeader";
+import  {Field, reduxForm} from "redux-form";
+import {maxLengthCreator, requiredField} from "../../utils/validators/validators";
 
 
 function Chat(props: DialogsPropsType) {
@@ -24,23 +26,23 @@ function Chat(props: DialogsPropsType) {
     useEffect(scrollToBottom, [props.dialogsPage.messages]);
 
 
-    const sendMessage = () => {
-        if (props.dialogsPage.newMessText.trim() !== '') {
-            props.sendMessage(props.dialogsPage.newMessText)
-        }
 
+
+    // const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    //     if (e.charCode === 13 && props.dialogsPage.newMessText.trim() !== '') {
+    //         e.preventDefault()
+    //         props.sendMessage(props.dialogsPage.newMessText)
+    //     } else if (props.dialogsPage.newMessText.trim() === '' && e.charCode === 13) {
+    //         e.preventDefault()
+    //     }
+    // }
+
+    //todo add types
+    const addNewMessage = (values: any) => {
+        // alert(values.newMessageBody)
+        props.sendMessage(values.newMessageBody)
     }
-    const onMessChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        props.onChangeMess(e.currentTarget.value)
-    }
-    const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.charCode === 13 && props.dialogsPage.newMessText.trim() !== '') {
-            e.preventDefault()
-            props.sendMessage(props.dialogsPage.newMessText)
-        } else if (props.dialogsPage.newMessText.trim() === '' && e.charCode === 13) {
-            e.preventDefault()
-        }
-    }
+
     const handleSelectMessage = (messID: string) => {
         if (selectedMessages.includes(messID)) {
             setSelectedMessages(selectedMessages.filter(m => m !== messID));
@@ -87,24 +89,7 @@ function Chat(props: DialogsPropsType) {
                     </MessagesArea>
                     <Divider/>
                     <InputArea item>
-                        <TextField fullWidth
-                                   value={props.dialogsPage.newMessText}
-                                   onKeyPress={onKeyPressHandler}
-                                   onChange={onMessChange}
-                                   multiline
-                                   autoFocus
-                                   maxRows={4}
-                                   size={"small"}
-                                   autoComplete={'off'}
-                                   id="outlined-basic"
-                                   label="Write a message"
-                                   variant="outlined"
-                                   style={{marginRight: '15px'}}/>
-                        <Button variant="contained"
-                                onClick={sendMessage}
-                                endIcon={<Send/>}>
-                            Send
-                        </Button>
+                        <AddMessageFormRedux onSubmit={addNewMessage}/>
                     </InputArea>
                     <Snackbar open={openAlert} autoHideDuration={6000}
                               style={{position: 'absolute', bottom: 10, left: 10}} onClose={() => setOpenAlert(false)}>
@@ -151,3 +136,44 @@ const InputArea = styled(Grid)({
     flexDirection: 'row',
     flexWrap: 'nowrap',
 });
+
+
+//@ts-ignore
+const renderTextField = ({label, input, meta: {touched, invalid, error}, ...custom}) => (
+    <TextField
+        label={'Write a message'}
+        error={touched && invalid}
+        helperText={touched && error}
+        fullWidth
+        multiline
+        autoFocus
+        maxRows={4}
+        size={"small"}
+        autoComplete={'off'}
+        id="outlined-basic"
+        variant="outlined"
+        style={{marginRight: '15px'}}
+        {...input}
+        {...custom}
+    />
+)
+
+let maxLength100 = maxLengthCreator(100)
+const AddMessageForm = (props: any) => {
+    return(
+        <form onSubmit={props.handleSubmit} style={{display:'flex', flexDirection:'row', width:'100%'}}>
+            <Field component={renderTextField}
+                   name={'newMessageBody'}
+                   validate={[requiredField, maxLength100]}
+            />
+            <Button variant="contained"
+                    type={"submit"}
+                    endIcon={<Send/>}>
+                Send
+            </Button>
+        </form>
+
+    )
+}
+
+const AddMessageFormRedux = reduxForm({form: 'dialogAddMessageForm'})(AddMessageForm)

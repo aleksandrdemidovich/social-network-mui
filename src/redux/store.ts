@@ -1,6 +1,6 @@
 import {v1} from "uuid";
-import {addPostActionCreator, profileReducer, UpdateNewPostTextCreator} from "./profile-reducer";
-import {dialogsReducer, sendMessageCreator, UpdateNewMessTextCreator} from "./dialogs-reducer";
+import {addPostActionCreator} from "./profile-reducer";
+import {sendMessageCreator} from "./dialogs-reducer";
 
 
 type MessageType = {
@@ -40,13 +40,13 @@ type StoreType = {
     dispatch: (action:ActionsType) => void
 }
 
-type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateNewMessTextActionType
+type ActionsType = AddPostActionType | SendMessageActionType
 
 type AddPostActionType = ReturnType<typeof addPostActionCreator>
-type UpdateNewPostTextActionType = ReturnType<typeof UpdateNewPostTextCreator>
+// type UpdateNewPostTextActionType = ReturnType<typeof UpdateNewPostTextCreator>
 
 type SendMessageActionType = ReturnType<typeof sendMessageCreator>
-type UpdateNewMessTextActionType = ReturnType<typeof UpdateNewMessTextCreator>
+// type UpdateNewMessTextActionType = ReturnType<typeof UpdateNewMessTextCreator>
 
 
 const store : StoreType = {

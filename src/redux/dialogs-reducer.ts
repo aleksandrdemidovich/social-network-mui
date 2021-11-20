@@ -1,7 +1,6 @@
 import {v1} from "uuid";
 
 const SEND_MESSAGE = "SEND-MESSAGE"
-const UPDATE_NEW_MESSAGE_TEXT = "UPDATE_NEW_MESSAGE_TEXT"
 const DELETE_DIALOG = "DELETE-DIALOG"
 const DELETE_MESSAGES = "DELETE-MESSAGES"
 
@@ -17,7 +16,6 @@ export type DialogType = {
 export type DialogPageType = {
     dialogs: Array<DialogType>
     messages: Array<MessageType>
-    newMessText: string
 }
 
 export type InitialStateType = typeof initialState
@@ -46,8 +44,7 @@ const initialState: DialogPageType = {
             id: v1(),
             message: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea illum, molestias quibusdam rem repellat sapiente? Amet consequatur corporis cum, et ipsam magni, nemo obcaecati quos saepe, sed sint tempora totam!'
         },
-    ] as Array<MessageType>,
-    newMessText: ''
+    ] as Array<MessageType>
 }
 
 export const dialogsReducer = (state: InitialStateType = initialState, action: ActionsType) : InitialStateType => {
@@ -57,10 +54,7 @@ export const dialogsReducer = (state: InitialStateType = initialState, action: A
                 id: v1(),
                 message: action.newMessText,
             }
-            return {...state, messages:[...state.messages, newMess], newMessText:''}
-        }
-        case "UPDATE_NEW_MESSAGE_TEXT": {
-            return  {...state, newMessText:action.newMessText}
+            return {...state, messages:[...state.messages, newMess]}
         }
         case "DELETE-DIALOG":{
             return {...state, dialogs:[...state.dialogs.filter(d => d.id !== action.dialogID)]}
@@ -73,21 +67,13 @@ export const dialogsReducer = (state: InitialStateType = initialState, action: A
     }
 }
 
-type ActionsType =  SendMessageActionType | UpdateNewMessTextActionType | DeleteMessagesActionType |  DeleteDialogActionType
+type ActionsType =  SendMessageActionType | DeleteMessagesActionType |  DeleteDialogActionType
 
 export type SendMessageActionType = ReturnType<typeof sendMessageCreator>
-export const sendMessageCreator = (messText: string)=> {
+export const sendMessageCreator = (newMessText: string)=> {
     return {
         type: SEND_MESSAGE,
-        newMessText: messText
-    } as const
-}
-
-export type UpdateNewMessTextActionType = ReturnType<typeof UpdateNewMessTextCreator>
-export const UpdateNewMessTextCreator= (messText: string) => {
-    return {
-        type: UPDATE_NEW_MESSAGE_TEXT,
-        newMessText: messText
+        newMessText
     } as const
 }
 
