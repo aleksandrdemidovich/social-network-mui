@@ -15,6 +15,7 @@ import useClasses from "../../../../customHookCSS/useClasses";
 import {ProfileType} from "../../../../redux/profile-reducer";
 import defaultUserAvatar from '../../../../assets/images/userAvatar.jpg'
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import {NavLink} from 'react-router-dom';
 
 const CustomAvatar = styled(Avatar)<AvatarProps>(({theme}) => ({
     width: 250,
@@ -160,12 +161,14 @@ function ProfileInfo(props: ProfileInfoPropsType) {
                     <ListItemText primary="GitHub"/>
                 </ListItemButton>
                 <Divider/>
-                <ListItemButton>
+                <a href={props.profile.contacts.github} target={'_blank'} style={{textDecoration: 'none', color:'inherit'}}>
+                <ListItemButton href={props.profile.contacts.github}>
                     <StyledListItemIcon>
                         <LinkedInIcon fontSize={"large"} className={classes.profileLinkedInIcon}/>
                     </StyledListItemIcon>
                     <ListItemText primary="LinkedIn"/>
                 </ListItemButton>
+                </a>
             </Grid>
         </Grid>
     );

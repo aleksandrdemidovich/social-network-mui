@@ -7,6 +7,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import useClasses from "../../../../../customHookCSS/useClasses";
 import {styled} from "@mui/material/styles";
 import { PostType } from '../../../../../redux/profile-reducer';
+import {PhotosType} from "../../../../../redux/users-reducer";
+import defaultUserAvatar from "../../../../../assets/images/userAvatar.jpg";
 
 
 function checkOneDigitNumbers(i: any) {
@@ -61,21 +63,15 @@ const RootPostContainer = styled(Grid)`
 
 type PostPropsType = {
     deletePost: (postId: string) => void
+    photos: PhotosType
+    userName: string
 }
 
 function Post(props: PostType & PostPropsType) {
 
     const classes = useClasses(styles);
 
-
-    const [like, setLike] = useState(props.likeCount)
-    const addLike = () => {
-        setLike(like + 1)
-    }
-    const removeLike = () => {
-        setLike(like - 1)
-    }
-    const removePost = () => {props.deletePost(props.id)}
+    const removePost = () => props.deletePost(props.id)
 
     return (
         <RootPostContainer container item spacing={2}
@@ -84,14 +80,16 @@ function Post(props: PostType & PostPropsType) {
                 <Grid item>
                     <Avatar
                         alt="Remy Sharp"
-                        src="https://www.seoclerk.com/pics/319222-1IvI0s1421931178.png"
+                        src={props.photos.large
+                            ? props.photos.large
+                            : defaultUserAvatar}
                         sx={{width: 50, height: 50}}
                     />
                 </Grid>
                 <Grid item>
                     <Grid container item spacing={2} direction={"column"}>
                         <Grid item style={{padding: 0, margin: 0}}>
-                            <h3 className={classes.userName}> Aleksandr Demidovich</h3>
+                            <h3 className={classes.userName}>{props.userName}</h3>
                         </Grid>
                         <Grid item className={classes.postTime} style={{paddingTop: 0}}>
                             <AccessTimeOutlined style={{width: '20px', paddingRight: '3px'}}/>{currentTime()}
@@ -110,10 +108,10 @@ function Post(props: PostType & PostPropsType) {
             <Grid item style={{padding: 0, marginLeft: 'auto', display: 'flex'}}>
                 {props.likeCount}
                 {props.likeCount === 0 ?
-                    <IconButton onClick={addLike} size={"small"} style={{padding: '0 0 0 5px'}}>
+                    <IconButton size={"small"} style={{padding: '0 0 0 5px'}}>
                         <FavoriteBorderOutlinedIcon style={{color: 'red', position: 'relative', right: 0}}/>
                     </IconButton>
-                    : <IconButton onClick={removeLike} size={"small"} style={{padding: '0 0 0 5px'}}>
+                    : <IconButton size={"small"} style={{padding: '0 0 0 5px'}}>
                         <FavoriteIcon style={{color: 'red', position: 'relative', right: 0}}/>
                     </IconButton>}
             </Grid>

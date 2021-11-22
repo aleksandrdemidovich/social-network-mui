@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
     Button,
-    Checkbox,
+    Checkbox, Chip,
     FormControlLabel,
     Grid,
     Paper,
@@ -11,6 +11,13 @@ import {
 } from "@mui/material";
 import {InjectedFormProps, reduxForm, Field} from "redux-form";
 import {requiredField} from "../../utils/validators/validators";
+import {connect, useSelector} from "react-redux";
+import {login} from "../../redux/auth-reducer";
+import {Redirect} from "react-router-dom";
+import {AppStateType} from "../../redux/redux-store";
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+
+
 
 type FormDataType = {
     login: string
@@ -63,16 +70,31 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props: any) => {
                 <Field name={'rememberMe'} label='Remember me' component={renderCheckbox}/>
                 <Button variant={"contained"} type={"submit"} color={"primary"}>Sign in</Button>
             </Grid>
-
+            {props.error && <Chip color={"error"} icon={<ErrorOutlineIcon/>} label={props.error}
+                   style={{margin: 'auto', marginTop: '20px', width: '100%'}}/>
+            }
         </form>
     );
 }
 
 const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
 
-const Login = () => {
+
+type loginPropsType = {
+    login: (email: string, password: string, rememberMe: boolean) => void
+}
+
+const Login = (props: loginPropsType) => {
+
+    const isAuth = useSelector<AppStateType, boolean>(state => state.auth.isAuth)
+
     const onSubmit = (formData: FormDataType) => {
-        console.log(formData)
+        props.login(formData.login, formData.password, formData.rememberMe)
+
+    }
+
+    if(isAuth) {
+        return <Redirect to={'/profile'}/>
     }
 
     return (
@@ -83,8 +105,8 @@ const Login = () => {
                 <Typography variant={'subtitle2'}>Here's your default email and password so you can try it
                     online</Typography>
                 <ul>
-                    <li>login</li>
-                    <li>password</li>
+                    <li>free@samuraijs.com</li>
+                    <li>free</li>
                 </ul>
             </LogInInfoContainer>
             <LogInFormContainer elevation={4}>
@@ -94,7 +116,7 @@ const Login = () => {
     );
 }
 
-export default Login;
+export default connect(null, {login})(Login);
 
 const RootContentContainer = styled(Paper)`
   display: flex;

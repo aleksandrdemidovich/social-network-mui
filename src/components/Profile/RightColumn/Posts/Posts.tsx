@@ -37,6 +37,8 @@ function Posts(props: PostsPropsType) {
                       message={p.message}
                       likeCount={p.likeCount}
                       deletePost={props.deletePost}
+                      photos={props.profilePhotos}
+                      userName={props.userName}
                 />
             </Paper>
         </PostContainer>

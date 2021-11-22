@@ -58,7 +58,7 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
 
 function DialogsHeader() {
     return (
-        <Grid container item direction={"row"}   justifyContent={"space-between"} alignItems={"center"} flexWrap={'nowrap'}
+        <Grid container item direction={"row"} justifyContent={"space-between"} alignItems={"center"} flexWrap={'nowrap'}
               style={{padding:'10px 15px 10px 15px'}}>
             <Grid item flexWrap={"nowrap"} boxSizing={"border-box"} xs={12}>
                 <Search >

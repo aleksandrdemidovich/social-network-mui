@@ -29,7 +29,7 @@ export type ProfileType = {
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
-    userId: number
+    userId: number | null
     photos: PhotosType
 }
 export type ProfilePageType = {
@@ -65,7 +65,7 @@ const initialState: ProfilePageType = {
         lookingForAJob: false,
         lookingForAJobDescription: '',
         fullName: '',
-        userId: 20060,
+        userId: null,
         photos: {
             large: null,
             small: null

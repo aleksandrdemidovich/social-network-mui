@@ -11,16 +11,14 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
 import {Avatar, Button, Divider, Drawer, Grid, ListItemIcon, styled} from "@mui/material";
 import {Logout, PersonAdd, Settings} from "@mui/icons-material";
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import NavBar from "../NavBar/NavBar";
-import {NavLink} from 'react-router-dom';
+import {NavLink, Redirect} from 'react-router-dom';
 import useClasses from "../../customHookCSS/useClasses";
 import {HeaderPropsType} from "./HeaderContainer";
+import {useSelector} from "react-redux";
+import {AppStateType} from "../../redux/redux-store";
 
 
 const MainHeaderContainer = styled('div')(({theme}) => ({
@@ -49,6 +47,10 @@ type Anchor = "top" | "left" | "bottom" | "right";
 
 
 export default function Header(props: HeaderPropsType) {
+
+    const isAuth = useSelector<AppStateType, boolean>(state => state.auth.isAuth)
+
+
     const classes = useClasses(styles);
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -59,6 +61,14 @@ export default function Header(props: HeaderPropsType) {
         setState(!state)
     }
 
+
+
+    const logout = () => {
+        if(isAuth) {
+            props.logout()
+        }
+        return <Redirect to={'/login'}/>
+    }
 
     const list = (anchor: Anchor) => (
         <Box
@@ -142,8 +152,10 @@ export default function Header(props: HeaderPropsType) {
             <NavLink to="/" className={classes.navLink}>
                 <MenuItem style={{display:'flex', flexDirection: 'row'}}>
                     <Avatar/>
-                    <Grid item style={{display:'flex', flexDirection: 'column'}}>{props.login}<Typography variant={"caption"}>Go to Profile</Typography></Grid>
-
+                    <Grid item style={{display:'flex', flexDirection: 'column'}}>
+                        {props.login}
+                        <Typography variant={"caption"}>Go to Profile</Typography>
+                    </Grid>
                 </MenuItem>
             </NavLink>
             <Divider/>
@@ -153,9 +165,9 @@ export default function Header(props: HeaderPropsType) {
                 </ListItemIcon>
                 Settings
             </MenuItem>
-            <MenuItem>
+            <MenuItem onClick={logout}>
                 <ListItemIcon>
-                    <Logout fontSize="small"/>
+                    <Logout fontSize="small" />
                 </ListItemIcon>
                 Logout
             </MenuItem>

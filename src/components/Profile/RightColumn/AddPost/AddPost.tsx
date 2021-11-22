@@ -4,6 +4,7 @@ import {AddPostPropsType} from "./AddPostContainer";
 import useClasses from "../../../../customHookCSS/useClasses";
 import {Field, reduxForm} from "redux-form";
 import {maxLengthCreator, requiredField} from "../../../../utils/validators/validators";
+import defaultUserAvatar from '../../../../assets/images/userAvatar.jpg'
 
 const styles = (theme: any) => ({
     rootContainer: {
@@ -40,8 +41,8 @@ function AddPost(props: AddPostPropsType) {
     return (
         <Grid container item display={"flex"} direction={"row"} flexWrap={"nowrap"} className={classes.rootContainer}>
             <Avatar
-                alt="Remy Sharp"
-                src="https://www.seoclerk.com/pics/319222-1IvI0s1421931178.png"
+                alt={props.profilePage.profile.fullName.charAt(0)}
+                src={'https://www.seoclerk.com/pics/319222-1IvI0s1421931178.png'}
                 sx={{width: 50, height: 50}}
             />
             <AddPostFormRedux onSubmit={addNewPost}/>

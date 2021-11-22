@@ -117,7 +117,7 @@ function App() {
         setDarkMode(!isDarkMode)
     }
 
-    // const isAuth = useSelector<AppStateType, boolean>(state => state.auth.isAuth )
+    const isAuth = useSelector<AppStateType, boolean>(state => state.auth.isAuth )
 
     return (
         <ThemeProvider theme={isDarkMode ? darkTheme :  lightTheme}>
@@ -126,11 +126,11 @@ function App() {
                 <HeaderContainer/>
                 <MainContentContainer>
                     <Grid item className={classes.rootContainer}>
-                       <Grid item className={classes.navigationContainer}>
+                        {isAuth ? <Grid item className={classes.navigationContainer}>
                             <Grid item>
                                 <NavBar/>
                             </Grid>
-                        </Grid>
+                        </Grid> : <></>}
                         <Switch>
                             <Route exact path="/">
                                 <Redirect to="/profile"/>
