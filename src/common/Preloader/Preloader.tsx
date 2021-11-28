@@ -4,7 +4,7 @@ import {Box, CircularProgress} from "@mui/material";
 function Preloader() {
 
     return (
-        <Box sx={{display: 'flex', margin: 'auto', marginTop: '30%', paddingBottom: '30%'}}>
+        <Box sx={{position: 'absolute', top: '50%', left:'50%'}}>
             <CircularProgress/>
         </Box>
     );

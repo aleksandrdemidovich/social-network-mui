@@ -8,7 +8,6 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import {Delete} from "@mui/icons-material";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({

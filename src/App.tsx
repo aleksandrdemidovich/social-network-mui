@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     createTheme,
     CssBaseline, Grid, IconButton,
@@ -7,7 +7,7 @@ import {
     styled,
     ThemeProvider, Tooltip,
 } from "@mui/material";
-import {Redirect, Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch, withRouter} from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
 import Music from "./components/ComingSoon/Music/Music";
 import News from "./components/ComingSoon/News/News";
@@ -25,8 +25,12 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
-import {useSelector} from "react-redux";
+import {connect, useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "./redux/redux-store";
+import {getAuthUserData} from "./redux/auth-reducer";
+import {compose} from "redux";
+import {initializeApp} from "./redux/app-reducer";
+import Preloader from "./common/Preloader/Preloader";
 
 
 const lightTheme = createTheme({
@@ -108,7 +112,7 @@ const styles = (theme: any) => ({
 });
 
 
-function App() {
+function App(props: any) {
     const classes = useClasses(styles);
 
     const [isDarkMode, setDarkMode] = useState(true)
@@ -118,6 +122,16 @@ function App() {
     }
 
     const isAuth = useSelector<AppStateType, boolean>(state => state.auth.isAuth )
+    const initialized = useSelector<AppStateType, boolean>(state => state.app.initialized)
+
+
+    useEffect(() => {
+        props.initializeApp()
+    }, [isAuth])
+
+    if(!initialized){
+        return <Preloader/>
+    }
 
     return (
         <ThemeProvider theme={isDarkMode ? darkTheme :  lightTheme}>
@@ -126,11 +140,11 @@ function App() {
                 <HeaderContainer/>
                 <MainContentContainer>
                     <Grid item className={classes.rootContainer}>
-                        {isAuth ? <Grid item className={classes.navigationContainer}>
+                        {isAuth && <Grid item className={classes.navigationContainer}>
                             <Grid item>
                                 <NavBar/>
                             </Grid>
-                        </Grid> : <></>}
+                        </Grid>}
                         <Switch>
                             <Route exact path="/">
                                 <Redirect to="/profile"/>
@@ -170,7 +184,7 @@ function App() {
     );
 }
 
-export default App;
+export default withRouter(connect(null,{initializeApp})(App)) ;
 
 const ModeButton = styled(IconButton)`
   position: sticky; //sticky
