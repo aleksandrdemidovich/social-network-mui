@@ -1,5 +1,5 @@
-import React from 'react';
-import {IconButton, Input, styled, Tooltip} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Input, styled, Tooltip} from "@mui/material";
 
 
 type ProfileStatusPropsType = {
@@ -7,58 +7,44 @@ type ProfileStatusPropsType = {
     updateStatus: (status: string) => void
 }
 
-class ProfileStatus extends React.Component<ProfileStatusPropsType> {
+const ProfileStatusWithHooks =  (props: ProfileStatusPropsType) => {
 
-    state = {
-        editMode: false,
-        status: this.props.status
-    }
+    const [editMode, setEditMode] = useState(false)
+    const [status, setStatus] = useState(props.status)
 
-    activateEditMode = () => {
-        this.setState({
-            editMode: true
-        })
-    }
-
-    deactivateEditMode = () => {
-        this.setState({
-            editMode: false
-        })
-        this.props.updateStatus(this.state.status)
-    }
-    onStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            status: e.currentTarget.value
-        })
-    }
-
-    componentDidUpdate(prevProps: Readonly<ProfileStatusPropsType>, prevState: Readonly<{}>, snapshot?: any) {
-        if(prevProps.status !== this.props.status){
-            this.setState({
-                status: this.props.status
-            })
-        }
-    }
+    useEffect(() => {
+        setStatus(props.status)
+    }, [props.status])
 
 
-    render() {
-        return (
-            <div>
-                {this.state.editMode
-                    ? <Input style={{width: '95%'}} onChange={this.onStatusChange} placeholder={'Set status'} value={this.state.status} autoFocus
-                             onBlur={this.deactivateEditMode}/>
-                    : <Tooltip title="Use double click to change your status" placement={'bottom-start'}>
-                        <StyledStatus onDoubleClick={this.activateEditMode}>
-                            {this.props.status ? this.props.status : 'default status'}
-                        </StyledStatus>
-                    </Tooltip>
-                }
-            </div>
-        )
+    const activateEditMode = () => {
+        setEditMode(true)
     }
+
+    const deactivateEditMode = () => {
+        setEditMode(false)
+        props.updateStatus(status)
+    }
+    const onStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setStatus(e.currentTarget.value)
+    }
+
+    return (
+        <div>
+            {editMode
+                ? <Input style={{width: '95%'}} onChange={onStatusChange} placeholder={'Set status'} value={status} autoFocus
+                         onBlur={deactivateEditMode}/>
+                : <Tooltip title="Use double click to change your status" placement={'bottom-start'}>
+                    <StyledStatus onDoubleClick={activateEditMode}>
+                        {status ? status : 'Set status'}
+                    </StyledStatus>
+                </Tooltip>
+            }
+        </div>
+    )
 }
 
-export default ProfileStatus;
+export default ProfileStatusWithHooks;
 
 const StyledStatus = styled('div')`
   margin-right: 20px;

@@ -6,6 +6,7 @@ import {ProfileType} from "../../../../redux/profile-reducer";
 import ProfileStatus from "./ProfileStatus";
 
 
+
 const Item = styled(Paper)(({theme}) => ({
     ...theme.typography.body2,
     textAlign: 'center',

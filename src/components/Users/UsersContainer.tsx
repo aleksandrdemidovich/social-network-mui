@@ -26,8 +26,8 @@ type mapStateToPropsType = {
     followingInProgress: number[]
 }
 type mapDispatchPropsType = {
-    follow:(userId: number) => void
-    unfollow:(userId: number) => void
+    follow: (userId: number) => void
+    unfollow: (userId: number) => void
     setCurrentPage: (page: number) => void
     requestUsers: (currentPage: number, pageSize: number) => void
 }
@@ -64,7 +64,7 @@ class UsersContainer extends React.Component<UsersPropsType> {
     handlePageChange = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
         this.props.requestUsers(pageNumber, this.props.pageSize)
         this.props.setCurrentPage(pageNumber)
-            };
+    };
 
 
     render() {
@@ -82,13 +82,11 @@ class UsersContainer extends React.Component<UsersPropsType> {
 }
 
 
-
-
 export default compose<React.ComponentType>(
     // withAuthRedirect,
     connect(mapStateToProps, {
-    follow, unfollow, setCurrentPage, requestUsers
-})
+        follow, unfollow, setCurrentPage, requestUsers
+    })
 )(UsersContainer)
 
 
