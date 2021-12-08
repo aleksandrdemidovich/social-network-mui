@@ -27,6 +27,7 @@ const MainHeaderContainer = styled('div')(({theme}) => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
+    color: 'white',
     [theme.breakpoints.down('md')]: {
         width: '90%',
     },

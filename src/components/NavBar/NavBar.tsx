@@ -12,8 +12,9 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import PeopleIcon from '@mui/icons-material/People';
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import VideoCameraBackOutlinedIcon from '@mui/icons-material/VideoCameraBackOutlined';
+import ChatIcon from '@mui/icons-material/Chat';
 import useClasses from "../../customHookCSS/useClasses";
-import {styled} from "@mui/material";
+import {Divider, styled} from "@mui/material";
 
 
 const styles = (theme: any) => ({
@@ -71,6 +72,19 @@ export default function NavBar() {
                     <ListItemText primary="Users"/>
                 </ListItemButton>
             </NavLink>
+            <Divider/>
+            <NavLink to="/chat" className={classes.navLink}>
+                <ListItemButton
+                    selected={selectedIndex === 9}
+                    onClick={(event) => handleListItemClick(event, 9)}
+                >
+                    <StyledListItemIcon>
+                        <ChatIcon/>
+                    </StyledListItemIcon>
+                    <ListItemText primary="Chat"/>
+                </ListItemButton>
+            </NavLink>
+            <Divider/>
             <NavLink to="/news" className={classes.navLink}>
                 <ListItemButton
                     selected={selectedIndex === 3}
@@ -143,5 +157,5 @@ export default function NavBar() {
 
 const StyledListItemIcon = styled(ListItemIcon)`
   min-width: 40px;
-  color: #3f51b5;
+  color: #90caf9;
 `

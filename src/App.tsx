@@ -3,7 +3,6 @@ import {
     createTheme,
     CssBaseline, Grid, IconButton,
     PaletteOptions,
-    Paper,
     styled,
     ThemeProvider, Tooltip,
 } from "@mui/material";
@@ -25,19 +24,18 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
-import {connect, useDispatch, useSelector} from "react-redux";
+import {connect, useSelector} from "react-redux";
 import {AppStateType} from "./redux/redux-store";
-import {getAuthUserData} from "./redux/auth-reducer";
-import {compose} from "redux";
 import {initializeApp} from "./redux/app-reducer";
 import Preloader from "./common/Preloader/Preloader";
+import Chat from "./components/Chat/Chat";
 
 
 const lightTheme = createTheme({
     palette: {
         mode: 'light',
         primary: {
-            main: '#3f51b5',
+            main: '#90caf9',
         },
         secondary: {
             main: '#f50057',
@@ -170,6 +168,7 @@ function App(props: any) {
                             <Route path='/videos' render={() => <Videos/>}/>
                             <Route path='/settings' render={() => <Settings/>}/>
                             <Route path='/login' render={() => <Login/>}/>
+                            <Route path='/chat' render={() => <Chat/>}/>
                         </Switch>
                     </Grid>
                 </MainContentContainer>
