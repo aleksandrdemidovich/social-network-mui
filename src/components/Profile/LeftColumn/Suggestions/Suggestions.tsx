@@ -18,7 +18,7 @@ function Suggestions (props: SuggestionPropsType) {
         const top6Users = props.users.filter(u => !u.followed).slice(0,6)
 
         const suggestionElements = top6Users.map(s => {
-            return <Grid item>
+            return <Grid item key={s.id}>
                 <Grid container xs={12} item spacing={2} direction={"row"} wrap={"nowrap"}
                       justifyContent={'flex-start'}>
                     <Grid item style={{marginLeft: '20px'}}>

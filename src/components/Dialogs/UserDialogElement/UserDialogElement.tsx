@@ -11,7 +11,7 @@ import {
     Typography
 } from "@mui/material";
 import {currentTime} from "../../Profile/RightColumn/Posts/Post/Post";
-import CustomizedDialogsAlert from "../../Alerts/DialogsAlert/CustomizedDialogsAlert";
+import CustomizedDialogsAlert from "../../../common/Preloader/DialogsAlert/CustomizedDialogsAlert";
 import {DialogType} from "../../../redux/dialogs-reducer";
 
 type UserDialogElementPropsType = {

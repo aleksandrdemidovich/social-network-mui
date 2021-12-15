@@ -1,17 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
-    Avatar, Button,
-    Divider,
     Grid,
     IconButton,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-    Typography
 } from "@mui/material";
-import {NavLink} from 'react-router-dom';
-import {Delete} from "@mui/icons-material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {alpha, styled} from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
@@ -34,7 +25,6 @@ const Search = styled('div')(({theme}) => ({
         width: 'auto',
     },
 }));
-
 const SearchIconWrapper = styled('div')(({theme}) => ({
     padding: theme.spacing(0, 1),
     height: '100%',
@@ -44,7 +34,6 @@ const SearchIconWrapper = styled('div')(({theme}) => ({
     alignItems: 'center',
     justifyContent: 'center',
 }));
-
 const StyledInputBase = styled(InputBase)(({theme}) => ({
 
     '& .MuiInputBase-input': {
@@ -56,7 +45,16 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
 }));
 
 
-function DialogsHeader() {
+type DialogsHeaderPropsType = {
+    setSearchDialogName: (name: string) => void
+}
+
+function DialogsHeader(props: DialogsHeaderPropsType) {
+
+    const changeEventHandler = (e: any) => {
+        props.setSearchDialogName(e.currentTarget.value)
+    }
+
     return (
         <Grid container item direction={"row"} justifyContent={"space-between"} alignItems={"center"} flexWrap={'nowrap'}
               style={{padding:'10px 15px 10px 15px'}}>
@@ -66,6 +64,7 @@ function DialogsHeader() {
                         <SearchIcon color={"primary"}/>
                     </SearchIconWrapper>
                     <StyledInputBase
+                        onChange={(e) => changeEventHandler(e)}
                         fullWidth
                         placeholder="Search…"
                         inputProps={{'aria-label': 'search'}}

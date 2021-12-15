@@ -24,11 +24,12 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
-import {connect, useSelector} from "react-redux";
+import {connect, useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "./redux/redux-store";
 import {initializeApp} from "./redux/app-reducer";
 import Preloader from "./common/Preloader/Preloader";
 import Chat from "./components/Chat/Chat";
+import {getUserProfile, ProfileType} from "./redux/profile-reducer";
 
 
 const lightTheme = createTheme({
@@ -110,8 +111,10 @@ const styles = (theme: any) => ({
 });
 
 
-function App(props: any) {
+function App() {
+    console.log('app')
     const classes = useClasses(styles);
+    const dispatch = useDispatch()
 
     const [isDarkMode, setDarkMode] = useState(true)
 
@@ -124,8 +127,8 @@ function App(props: any) {
 
 
     useEffect(() => {
-        props.initializeApp()
-    }, [isAuth])
+        dispatch(initializeApp())
+    }, [])
 
     if(!initialized){
         return <Preloader/>
@@ -183,10 +186,10 @@ function App(props: any) {
     );
 }
 
-export default withRouter(connect(null,{initializeApp})(App)) ;
+export default App
 
 const ModeButton = styled(IconButton)`
-  position: sticky; //sticky
+  position: sticky;
   bottom: 0;
   left: 97%;
 `

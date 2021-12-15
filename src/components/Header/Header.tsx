@@ -12,7 +12,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import {Avatar, Button, Divider, Drawer, Grid, ListItemIcon, styled} from "@mui/material";
-import {Logout, PersonAdd, Settings} from "@mui/icons-material";
+import {Logout, Settings} from "@mui/icons-material";
 import NavBar from "../NavBar/NavBar";
 import {NavLink, Redirect} from 'react-router-dom';
 import useClasses from "../../customHookCSS/useClasses";

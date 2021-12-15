@@ -14,10 +14,11 @@ export type AuthResponseAPIType = {
 //---follow
 export type FollowUnfollowResponseAPIType = {
     data: {
-
+        resultCode: number
+        messages: string[]
+        data: {}
     }
-    resultCode: number
-    messages: string[]
+
 }
 
 //---profile

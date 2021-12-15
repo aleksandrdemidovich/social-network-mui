@@ -28,12 +28,10 @@ export const initializedSuccess = () => {
 
 
 //thunk
-export const initializeApp = () => (dispatch: Dispatch<any>) => {
+export const initializeApp = () => async (dispatch: Dispatch<any>) => {
     let promise = dispatch(getAuthUserData())
-    Promise.all([promise])
-        .then(() => {
-            dispatch(initializedSuccess())
-        })
+    await Promise.all([promise])
+    dispatch(initializedSuccess())
     }
 
 

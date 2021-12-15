@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
-import {Avatar, Button, Grid, Paper, TextField} from "@mui/material";
+import React from 'react';
+import {Avatar, Button, Grid, TextField} from "@mui/material";
 import {AddPostPropsType} from "./AddPostContainer";
 import useClasses from "../../../../customHookCSS/useClasses";
 import {Field, reduxForm} from "redux-form";
 import {maxLengthCreator, requiredField} from "../../../../utils/validators/validators";
-import defaultUserAvatar from '../../../../assets/images/userAvatar.jpg'
 
 const styles = (theme: any) => ({
     rootContainer: {
@@ -19,7 +18,6 @@ function AddPost(props: AddPostPropsType) {
 
     const classes = useClasses(styles);
 
-    const [error, setError] = useState(false)
 
 
 
@@ -35,7 +33,10 @@ function AddPost(props: AddPostPropsType) {
 
     //todo types
     const addNewPost = (values: any) => {
-        props.addPost(values.newPostText)
+        if(values.newPostText){
+            props.addPost(values.newPostText)
+            values.newPostText = ''
+        } else return
     }
 
     return (

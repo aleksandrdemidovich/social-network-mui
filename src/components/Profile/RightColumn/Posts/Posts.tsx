@@ -26,8 +26,9 @@ const NoPostsContainer = styled(Grid)`
 ;
 `;
 
-function Posts(props: PostsPropsType) {
+const Posts = React.memo((props: PostsPropsType) => {
 
+    console.log('render posts')
 
     const postsElement = props.posts.map(p =>
         <PostContainer container item key={p.id}>
@@ -64,6 +65,6 @@ function Posts(props: PostsPropsType) {
 
         </>
     );
-}
+})
 
 export default Posts;

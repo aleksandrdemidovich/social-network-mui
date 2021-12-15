@@ -14,7 +14,7 @@ import Preloader from "../../common/Preloader/Preloader";
 
 
 function Profile(props: ProfilePropsType) {
-    if (!props.profile) {
+    if (!props.profile.fullName) {
         return <Preloader/>
     }
 

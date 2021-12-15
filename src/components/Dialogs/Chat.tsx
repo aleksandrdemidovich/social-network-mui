@@ -15,7 +15,6 @@ function Chat(props: DialogsPropsType) {
     const messageArea = useRef<HTMLDivElement>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
-    const [editMode, setEditMode] = useState(false)
     const [openAlert, setOpenAlert] = useState(false)
     const [selectedMessages, setSelectedMessages] = useState<string[]>([])
 
@@ -39,8 +38,10 @@ function Chat(props: DialogsPropsType) {
 
     //todo add types
     const addNewMessage = (values: any) => {
-        // alert(values.newMessageBody)
-        props.sendMessage(values.newMessageBody)
+        if(values.newMessageBody){
+            props.sendMessage(values.newMessageBody)
+            values.newMessageBody = ''
+        } else return
     }
 
     const handleSelectMessage = (messID: string) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import {Badge, BadgeProps, Grid, IconButton, Input, Paper, styled, Tooltip, Typography} from "@mui/material";
+import {Badge, BadgeProps, Grid, IconButton, Paper, styled, Tooltip, Typography} from "@mui/material";
 import useClasses from "../../../../customHookCSS/useClasses";
 import {ProfileType} from "../../../../redux/profile-reducer";
 import ProfileStatus from "./ProfileStatus";

@@ -15,7 +15,6 @@ import useClasses from "../../../../customHookCSS/useClasses";
 import {ProfileType} from "../../../../redux/profile-reducer";
 import defaultUserAvatar from '../../../../assets/images/userAvatar.jpg'
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import {NavLink} from 'react-router-dom';
 
 const CustomAvatar = styled(Avatar)<AvatarProps>(({theme}) => ({
     width: 250,
@@ -103,7 +102,7 @@ function ProfileInfo(props: ProfileInfoPropsType) {
                     overlap="circular"
                     anchorOrigin={{vertical: 'top', horizontal: 'right'}}
                 >
-                    <CustomAvatar src={props.profile.photos.large ? props.profile.photos.large : defaultUserAvatar}/>
+                    <CustomAvatar alt='avatar' src={props.profile.photos.large ? props.profile.photos.large : defaultUserAvatar}/>
                 </StyledBadge>
 
 
@@ -126,7 +125,7 @@ function ProfileInfo(props: ProfileInfoPropsType) {
                 <ListItemButton>
                     <StyledListItemIcon>
                         <i style={{padding: '2px'}}>
-                            <img src='https://upload.wikimedia.org/wikipedia/commons/2/21/VK.com-logo.svg'
+                            <img alt='vk img' src='https://upload.wikimedia.org/wikipedia/commons/2/21/VK.com-logo.svg'
                                  className={classes.profileVkontakteIcon}/>
                         </i>
                     </StyledListItemIcon>
@@ -161,7 +160,7 @@ function ProfileInfo(props: ProfileInfoPropsType) {
                     <ListItemText primary="GitHub"/>
                 </ListItemButton>
                 <Divider/>
-                <a href={props.profile.contacts.github} target={'_blank'} style={{textDecoration: 'none', color:'inherit'}}>
+                <a href={props.profile.contacts.github} target={'_blank'} rel="noreferrer" style={{textDecoration: 'none', color:'inherit'}}>
                 <ListItemButton href={props.profile.contacts.github}>
                     <StyledListItemIcon>
                         <LinkedInIcon fontSize={"large"} className={classes.profileLinkedInIcon}/>

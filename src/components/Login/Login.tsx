@@ -52,10 +52,10 @@ const renderCheckbox = ({input, label}) => (
 )
 
 
-const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props: any) => {
+const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({handleSubmit, error}) => {
 
     return (
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <Field name={'login'}
                    label="Email"
                    component={renderTextField}
@@ -71,7 +71,7 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props: any) => {
                 <Field name={'rememberMe'} label='Remember me' component={renderCheckbox}/>
                 <Button variant={"contained"} type={"submit"} color={"primary"}>Sign in</Button>
             </Grid>
-            {props.error && <Chip color={"error"} icon={<ErrorOutlineIcon/>} label={props.error}
+            {error && <Chip color={"error"} icon={<ErrorOutlineIcon/>} label={error}
                    style={{margin: 'auto', marginTop: '20px', width: '100%'}}/>
             }
         </form>

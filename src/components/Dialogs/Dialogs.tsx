@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Divider,
     Grid,
@@ -8,7 +8,6 @@ import DialogsHeader from "./Headers/DialogsHeader";
 import {DialogsPropsType} from "./DialogsContainer";
 import UserDialogElement from "./UserDialogElement/UserDialogElement";
 import {styled} from "@mui/material/styles";
-import {Redirect} from "react-router-dom";
 
 const RootContainer = styled(Grid)({
     height: '90vh ',
@@ -27,13 +26,17 @@ const RootContainer = styled(Grid)({
 
 function Dialogs(props: DialogsPropsType) {
 
+    const [searchDialogName, setSearchDialogName] = useState('')
+
     let dialogsElements = props.dialogsPage.dialogs
         .map(d => <UserDialogElement key={d.id}
                                      id={d.id}
                                      name={d.name}
                                      deleteDialog={props.deleteDialog}
             />
-        );
+        ).filter(d => d.props.name.toLowerCase().includes(searchDialogName.toLowerCase()))
+
+
 
     // if(!props.isAuth) return <Redirect to={'/login'}/>
 
@@ -42,7 +45,7 @@ function Dialogs(props: DialogsPropsType) {
             <Paper elevation={4}>
                 <RootContainer>
                     <Grid item>
-                        <DialogsHeader/>
+                        <DialogsHeader setSearchDialogName={setSearchDialogName}/>
                         <Divider/>
                     </Grid>
                     <Grid item wrap={"nowrap"}>

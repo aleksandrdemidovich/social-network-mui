@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import AccessTimeOutlined from '@mui/icons-material/AccessTimeOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -67,7 +67,7 @@ type PostPropsType = {
     userName: string
 }
 
-function Post(props: PostType & PostPropsType) {
+const Post = React.memo((props: PostType & PostPropsType) => {
 
     const classes = useClasses(styles);
 
@@ -117,7 +117,7 @@ function Post(props: PostType & PostPropsType) {
             </Grid>
         </RootPostContainer>
     );
-}
+})
 
 
 export default Post;

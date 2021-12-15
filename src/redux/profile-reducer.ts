@@ -54,7 +54,7 @@ const initialState: ProfilePageType = {
         aboutMe: '',
         contacts: {
             facebook: '',
-            website:'',
+            website: '',
             vk: '',
             twitter: '',
             instagram: '',
@@ -75,7 +75,7 @@ const initialState: ProfilePageType = {
 }
 
 
-export const profileReducer = (state:InitialStateType = initialState, action: ActionsType) : InitialStateType => {
+export const profileReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case "ADD-POST": {
             let newPost = {
@@ -83,19 +83,16 @@ export const profileReducer = (state:InitialStateType = initialState, action: Ac
                 message: action.newPostText,
                 likeCount: 0
             }
-            return {...state, posts:[newPost,...state.posts]}
+            return {...state, posts: [newPost, ...state.posts]}
         }
-        // case "UPDATE-NEW-POST-TEXT": {
-        //     return{...state, newPostText: action.newText}
-        // }
-        case "DELETE-POST":{
-            return {...state, posts:[...state.posts.filter(p => p.id !== action.postID)]}
+        case "DELETE-POST": {
+            return {...state, posts: [...state.posts.filter(p => p.id !== action.postID)]}
         }
-        case "SET-USER-PROFILE":{
-            return {...state, profile:action.profile}
+        case "SET-USER-PROFILE": {
+            return {...state, profile: action.profile}
         }
-        case "SET-STATUS":{
-            return {...state, status:action.status}
+        case "SET-STATUS": {
+            return {...state, status: action.status}
         }
         default :
             return state
@@ -109,7 +106,7 @@ type ActionsType = AddPostActionType
     | setUserStatusActionType
 
 export type AddPostActionType = ReturnType<typeof addPostActionCreator>
-export const addPostActionCreator = (newPostText: string)=> {
+export const addPostActionCreator = (newPostText: string) => {
     return {
         type: ADD_POST,
         newPostText
@@ -141,32 +138,22 @@ export const setStatus = (status: string) => {
 }
 
 //thunk
-export const getUserProfile = (userId: string) => {
-    return (dispatch: Dispatch) => {
-        dispatch(toggleIsFetching(true))
-        profileAPI.getProfile(userId)
-            .then(data => {
-                dispatch(setUserProfile(data))
-            });
-    }
+export const getUserProfile = (userId: string) => async (dispatch: Dispatch) => {
+    dispatch(toggleIsFetching(true))
+    let response = await profileAPI.getProfile(userId)
+    dispatch(setUserProfile(response))
 }
 
-export const getStatus = (userId: string) => {
-    return (dispatch: Dispatch) => {
-        profileAPI.getStatus(userId)
-            .then(data => {
-                dispatch(setStatus(data))
-            });
-    }
+
+export const getStatus = (userId: string) => async (dispatch: Dispatch) => {
+    let response = await profileAPI.getStatus(userId)
+    dispatch(setStatus(response))
 }
 
-export const updateStatus = (status: string) => {
-    return (dispatch: Dispatch) => {
-        profileAPI.updateStatus(status)
-            .then(data => {
-                if(data.resultCode === 0) {
-                    dispatch(setStatus(status))
-                }
-            });
+
+export const updateStatus = (status: string) => async (dispatch: Dispatch) => {
+    let response = await profileAPI.updateStatus(status)
+    if (response.resultCode === 0) {
+        dispatch(setStatus(status))
     }
 }

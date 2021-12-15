@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Avatar, Button, Divider, Grid, IconButton, Paper, styled, TextField} from "@mui/material";
+import {Avatar, Button, Divider, Grid, Paper, styled, TextField} from "@mui/material";
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from "../../redux/redux-store";
 import {Send} from "@mui/icons-material";
@@ -17,7 +17,7 @@ function Chat() {
         return () => {
             dispatch(stopMessagesListening())
         }
-    }, [])
+    }, [dispatch])
 
     return (
         <Grid item xs={10}>
@@ -50,8 +50,7 @@ const Message: React.FC<{ message: ChatMessageAPIType }> = React.memo(({message}
     )
 })
 
-
-const Messages: React.FC<{}> = ({}) => {
+const Messages: React.FC = () => {
     const messages = useSelector((state: AppStateType) => state.chat.messages)
     const messagesAnchorRef = useRef<HTMLDivElement>(null);
     const [isAutoScroll, setIsAutoScroll] = useState(true)

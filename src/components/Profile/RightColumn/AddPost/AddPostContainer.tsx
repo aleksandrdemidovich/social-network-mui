@@ -1,4 +1,3 @@
-import React from 'react';
 import {addPostActionCreator, ProfilePageType} from "../../../../redux/profile-reducer";
 import AddPost from "./AddPost";
 import {connect} from "react-redux";
