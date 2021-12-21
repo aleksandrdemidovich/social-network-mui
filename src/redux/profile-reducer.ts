@@ -7,11 +7,14 @@ const ADD_POST = "ADD-POST"
 const DELETE_POST = "DELETE-POST"
 const SET_USER_PROFILE = "SET-USER-PROFILE"
 const SET_STATUS = "SET-STATUS"
+const SET_LIKE = "SET-LIKE"
+const SET_DISLIKE = "SET-DISLIKE"
 
 export type PostType = {
     id: string
     message: string
     likeCount: number
+    isLiked: boolean
 }
 export type ContactsType = {
     vk: string
@@ -41,14 +44,15 @@ export type ProfilePageType = {
 export type InitialStateType = typeof initialState
 const initialState: ProfilePageType = {
     posts: [
-        {id: v1(), message: 'Hi, how are you ', likeCount: 15},
-        {id: v1(), message: 'It\'s my first post ', likeCount: 20},
+        {id: v1(), message: 'Hi, how are you ', likeCount: 15, isLiked: false},
+        {id: v1(), message: 'It\'s my first post ', likeCount: 20, isLiked: true},
         {
             id: v1(),
             message: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea illum, molestias quibusdam rem repellat sapiente? Amet consequatur corporis cum, et ipsam magni, nemo obcaecati quos saepe, sed sint tempora totam',
-            likeCount: 5
+            likeCount: 5,
+            isLiked: false
         },
-        {id: v1(), message: 'Da da ', likeCount: 99},
+        {id: v1(), message: 'Da da ', likeCount: 99, isLiked: true},
     ] as PostType[],
     profile: {
         aboutMe: '',
@@ -81,7 +85,8 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
             let newPost = {
                 id: v1(),
                 message: action.newPostText,
-                likeCount: 0
+                likeCount: 0,
+                isLiked: false
             }
             return {...state, posts: [newPost, ...state.posts]}
         }
@@ -94,6 +99,17 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
         case "SET-STATUS": {
             return {...state, status: action.status}
         }
+        case "SET-LIKE": {
+            return {
+                ...state, posts: state.posts.map(p => p.id === action.postID
+                    ? {...p, likeCount: p.likeCount + 1, isLiked: true} : p)
+            }
+        }
+        case "SET-DISLIKE":
+            return {
+                ...state, posts: state.posts.map(p => p.id === action.postID
+                    ? {...p, likeCount: p.likeCount - 1, isLiked: false} : p)
+            }
         default :
             return state
     }
@@ -104,6 +120,8 @@ type ActionsType = AddPostActionType
     | DeletePostActionType
     | setUserProfileActionType
     | setUserStatusActionType
+    | setLikeActionType
+    | setDislikeActionType
 
 export type AddPostActionType = ReturnType<typeof addPostActionCreator>
 export const addPostActionCreator = (newPostText: string) => {
@@ -136,6 +154,23 @@ export const setStatus = (status: string) => {
         status
     } as const
 }
+
+export type setLikeActionType = ReturnType<typeof setLike>
+export const setLike = (postID: string) => {
+    return {
+        type: SET_LIKE,
+        postID
+    } as const
+}
+
+export type setDislikeActionType = ReturnType<typeof setDislike>
+export const setDislike = (postID: string) => {
+    return {
+        type: SET_DISLIKE,
+        postID
+    } as const
+}
+
 
 //thunk
 export const getUserProfile = (userId: string) => async (dispatch: Dispatch) => {

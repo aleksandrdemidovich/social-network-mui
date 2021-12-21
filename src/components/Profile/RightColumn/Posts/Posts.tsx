@@ -37,6 +37,7 @@ const Posts = React.memo((props: PostsPropsType) => {
                       id={p.id}
                       message={p.message}
                       likeCount={p.likeCount}
+                      isLiked={p.isLiked}
                       deletePost={props.deletePost}
                       photos={props.profilePhotos}
                       userName={props.userName}

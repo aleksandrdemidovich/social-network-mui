@@ -6,9 +6,10 @@ import {Avatar, Grid, IconButton} from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
 import useClasses from "../../../../../customHookCSS/useClasses";
 import {styled} from "@mui/material/styles";
-import { PostType } from '../../../../../redux/profile-reducer';
+import {PostType, setDislike, setLike} from '../../../../../redux/profile-reducer';
 import {PhotosType} from "../../../../../redux/users-reducer";
 import defaultUserAvatar from "../../../../../assets/images/userAvatar.jpg";
+import {useDispatch} from "react-redux";
 
 
 function checkOneDigitNumbers(i: any) {
@@ -70,6 +71,14 @@ type PostPropsType = {
 const Post = React.memo((props: PostType & PostPropsType) => {
 
     const classes = useClasses(styles);
+    const dispatch = useDispatch()
+
+    const addLike = () => {
+        dispatch(setLike(props.id))
+    }
+    const addDislike = () => {
+        dispatch(setDislike(props.id))
+    }
 
     const removePost = () => props.deletePost(props.id)
 
@@ -107,11 +116,11 @@ const Post = React.memo((props: PostType & PostPropsType) => {
             </Grid>
             <Grid item style={{padding: 0, marginLeft: 'auto', display: 'flex'}}>
                 {props.likeCount}
-                {props.likeCount === 0 ?
-                    <IconButton size={"small"} style={{padding: '0 0 0 5px'}}>
+                {!props.isLiked ?
+                    <IconButton size={"small"} onClick={addLike} style={{padding: '0 0 0 5px'}}>
                         <FavoriteBorderOutlinedIcon style={{color: 'red', position: 'relative', right: 0}}/>
                     </IconButton>
-                    : <IconButton size={"small"} style={{padding: '0 0 0 5px'}}>
+                    : <IconButton size={"small"} onClick={addDislike} style={{padding: '0 0 0 5px'}}>
                         <FavoriteIcon style={{color: 'red', position: 'relative', right: 0}}/>
                     </IconButton>}
             </Grid>

@@ -65,6 +65,7 @@ function Chat(props: DialogsPropsType) {
         .map(m => <SentMessage key={m.id}
                                message={m.message}
                                id={m.id}
+                               isEdit={m.isEdit}
                                editMode={selectedMessages.includes(m.id)}
                                setSelectedMessages={handleSelectMessage}
             />
