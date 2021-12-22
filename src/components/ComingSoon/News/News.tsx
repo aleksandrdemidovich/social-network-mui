@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Grid, Paper, TextField} from "@mui/material";
+import {Button, Grid, Paper, Slider, TextField} from "@mui/material";
 import {styled} from '@mui/material/styles';
 
 import {green} from "@mui/material/colors";
@@ -45,6 +45,12 @@ function News() {
                     <Grid container className={classes.root} item direction={"row"} flexWrap={"nowrap"}>
                         <TextField/>
                         <Button className={classes.button} variant={"contained"} color={"primary"}>Add</Button>
+                        <Slider
+                            size="small"
+                            defaultValue={70}
+                            aria-label="Small"
+                            valueLabelDisplay="on"
+                        />
                     </Grid>
                 </Root>
             </Paper>

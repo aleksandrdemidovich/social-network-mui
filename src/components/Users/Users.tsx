@@ -1,16 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
-    Avatar,
     Button,
     Grid,
     Input,
     NativeSelect,
-    Pagination,
-    styled,
+    Pagination, Select,
 } from "@mui/material";
-import {UserType} from "../../redux/users-reducer";
+import {requestUsers, setUserCountPerPage, toggleAllUsersOrFriends, UserType} from "../../redux/users-reducer";
 import Preloader from "../../common/Preloader/Preloader";
 import UserCard from "./UserCard/UserCard";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "../../redux/redux-store";
 
 
 type UsersPropsType = {
@@ -27,6 +27,11 @@ type UsersPropsType = {
 
 function Users(props: UsersPropsType) {
 
+    const usersCountPerPage = useSelector((state: AppStateType) => state.usersPage.pageSize)
+    const isFriends = useSelector((state: AppStateType) => state.usersPage.isFriends)
+
+    const dispatch = useDispatch()
+
     const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
     const usersElement = props.users.map(u => {
         return <UserCard name={u.name}
@@ -40,6 +45,18 @@ function Users(props: UsersPropsType) {
                          followingInProgress={props.followingInProgress}/>
     })
 
+
+    const onChangeCardsCountPerPage = (value: string) => {
+        dispatch(setUserCountPerPage(+value))
+    }
+    const onToggleAllUsersOrFriends = (value: string) => {
+        const booleanValue = value.toLowerCase() !== 'false'
+        dispatch(toggleAllUsersOrFriends(booleanValue))
+    }
+
+    useEffect(() => {
+        dispatch(requestUsers(props.currentPage, usersCountPerPage, isFriends))
+    }, [usersCountPerPage, isFriends])
 
     return (
         <Grid container item direction={"column"}>
@@ -59,10 +76,10 @@ function Users(props: UsersPropsType) {
                         color={"primary"}
                         size={"small"}
                         style={{fontSize: '13px'}}
-                        defaultValue={'Filter'}>
-                        <option value={10}>All</option>
-                        <option value={20}>Only followed</option>
-                        <option value={30}>Only unfollowed</option>
+                        onChange={(e) => onToggleAllUsersOrFriends(e.currentTarget.value)}
+                        value={isFriends}>
+                        <option value={'false'}>All</option>
+                        <option value={'true'}>Only followed</option>
                     </NativeSelect>
                 </Grid>
             </Grid>
@@ -70,13 +87,25 @@ function Users(props: UsersPropsType) {
                   style={{marginTop: '10px', marginLeft: '20px'}}>
                 {props.isFetching ? <Preloader/> : usersElement}
             </Grid>
-            <Grid item flexWrap={"nowrap"} margin={"auto"}>
-                {props.isFetching ? <></> : <Pagination count={pagesCount}
-                            page={props.currentPage}
-                            onChange={props.handlePageChange}
-                            variant="outlined"
-                            shape="rounded"
-                            color={"primary"}/>}
+            <Grid item display={"flex"} alignItems={"center"} flexDirection={"row"} flexWrap={"nowrap"} margin={"auto"}>
+                {props.isFetching ? <></>
+                    : <><Pagination count={pagesCount}
+                                    page={props.currentPage}
+                                    onChange={props.handlePageChange}
+                                    variant="outlined"
+                                    shape="rounded"
+                                    color={"primary"}/>
+                        <p style={{margin: '0 10px 0 15px'}}>Show</p>
+                        <NativeSelect
+                            onChange={(e) => onChangeCardsCountPerPage(e.currentTarget.value)}
+                            color={"primary"}
+                            value={usersCountPerPage}>
+                            <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={15}>15</option>
+                            <option value={20}>20</option>
+                        </NativeSelect><p style={{margin: '0 0 0 10px'}}> users per page</p>
+                    </>}
             </Grid>
         </Grid>
 

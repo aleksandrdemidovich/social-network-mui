@@ -6,7 +6,7 @@ import {
     styled,
     ThemeProvider, Tooltip,
 } from "@mui/material";
-import {Redirect, Route, Switch, withRouter} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
 import Music from "./components/ComingSoon/Music/Music";
 import News from "./components/ComingSoon/News/News";
@@ -16,21 +16,22 @@ import Communities from "./components/ComingSoon/Communities/Communities";
 import Photos from "./components/ComingSoon/Photos/Photos";
 import Videos from "./components/ComingSoon/Videos/Videos";
 import ChatContainer from "./components/Dialogs/ChatContainer";
-import DialogsContainer from "./components/Dialogs/DialogsContainer";
-import UsersContainer from "./components/Users/UsersContainer";
 import useClasses from "./customHookCSS/useClasses";
-import ProfileContainer from "./components/Profile/ProfileContainer";
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
-import {connect, useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "./redux/redux-store";
 import {initializeApp} from "./redux/app-reducer";
 import Preloader from "./common/Preloader/Preloader";
-import Chat from "./components/Chat/Chat";
-import {getUserProfile, ProfileType} from "./redux/profile-reducer";
+import {withSuspense} from "./hoc/WithSuspense";
 
+
+const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
+const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
+const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
+const Chat = React.lazy(() => import('./components/Chat/Chat'));
 
 const lightTheme = createTheme({
     palette: {
@@ -111,6 +112,12 @@ const styles = (theme: any) => ({
 });
 
 
+const SuspendedDialogs = withSuspense(DialogsContainer)
+const SuspendedProfile = withSuspense(ProfileContainer)
+const SuspendedUsers = withSuspense(UsersContainer)
+const SuspendedChat = withSuspense(Chat)
+
+
 function App() {
     console.log('app')
     const classes = useClasses(styles);
@@ -122,7 +129,7 @@ function App() {
         setDarkMode(!isDarkMode)
     }
 
-    const isAuth = useSelector<AppStateType, boolean>(state => state.auth.isAuth )
+    const isAuth = useSelector<AppStateType, boolean>(state => state.auth.isAuth)
     const initialized = useSelector<AppStateType, boolean>(state => state.app.initialized)
 
 
@@ -130,12 +137,12 @@ function App() {
         dispatch(initializeApp())
     }, [])
 
-    if(!initialized){
+    if (!initialized) {
         return <Preloader/>
     }
 
     return (
-        <ThemeProvider theme={isDarkMode ? darkTheme :  lightTheme}>
+        <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
             <CssBaseline/>
             <div className="App">
                 <HeaderContainer/>
@@ -150,10 +157,10 @@ function App() {
                             <Route exact path="/">
                                 <Redirect to="/profile"/>
                             </Route>
-                            <Route path='/profile/:userId?' render={() => <ProfileContainer />}/>
+                            <Route path='/profile/:userId?' render={() => <SuspendedProfile/>}/>
                             <Route exact path='/dialogs' render={() =>
                                 <Grid container item spacing={2} flexDirection={"row"} flexWrap={"nowrap"}>
-                                    <DialogsContainer/>
+                                    <SuspendedDialogs/>
                                     <RightDialogMenu/>
                                 </Grid>
                             }/>
@@ -163,22 +170,23 @@ function App() {
                                     <RightDialogMenu/>
                                 </Grid>
                             }/>
-                            <Route path='/users' render={() => <UsersContainer/>}/>
-                            <Route path='/news' render={() =><News/>}/>
+                            <Route path='/users' render={() => <SuspendedUsers/>}/>
+                            <Route path='/news' render={() => <News/>}/>
                             <Route path='/music' render={() => <Music/>}/>
                             <Route path='/communities' render={() => <Communities/>}/>
                             <Route path='/photos' render={() => <Photos/>}/>
                             <Route path='/videos' render={() => <Videos/>}/>
                             <Route path='/settings' render={() => <Settings/>}/>
                             <Route path='/login' render={() => <Login/>}/>
-                            <Route path='/chat' render={() => <Chat/>}/>
+                            <Route path='/chat' render={() => <SuspendedChat/>}/>
+
                         </Switch>
                     </Grid>
                 </MainContentContainer>
                 <ModeButton aria-label="Switcher Mode" size={"large"} onClick={toggleThemeMode}>
                     {isDarkMode
                         ? <Tooltip title="Switch to light"><LightModeIcon color={"warning"}/></Tooltip>
-                        : <Tooltip title="Switch to dark"><DarkModeIcon/></Tooltip> }
+                        : <Tooltip title="Switch to dark"><DarkModeIcon/></Tooltip>}
                 </ModeButton>
             </div>
         </ThemeProvider>

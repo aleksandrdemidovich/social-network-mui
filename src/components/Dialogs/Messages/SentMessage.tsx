@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {currentTime} from "../../Profile/RightColumn/Posts/Post/Post";
 import {styled} from "@mui/material/styles";
-import {Grid, TextField} from "@mui/material";
+import {Grid, IconButton, TextField} from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import {EditMessageAC, MessageType} from "../../../redux/dialogs-reducer";
 import {useDispatch} from "react-redux";
 
@@ -53,7 +54,7 @@ function SentMessage(props: MessageType & SentMessagePropsType) {
       & svg {
         visibility: ${props.editMode ? 'visible' : 'hidden'};
         margin-left: 10px;
-        margin-right: auto;
+        //margin-right: auto;
         position: relative;
         bottom: 50%;
       }
@@ -66,7 +67,7 @@ function SentMessage(props: MessageType & SentMessagePropsType) {
           opacity: ${props.editMode ? '1' : '0.5'};
           visibility: visible;
           margin-left: 10px;
-          margin-right: auto;
+          //margin-right: auto;
         }
       ;;
       }
@@ -96,24 +97,25 @@ function SentMessage(props: MessageType & SentMessagePropsType) {
 
     return (
         <SentMessageContainer key={props.id}
-                              // onClick={selectMessage}
-        >
+                              onClick={selectMessage}>
             <CheckCircleIcon color={"primary"}/>
+            {!editMode && <EditOutlinedIcon color={"primary"} onClick={activateEditMode}/>}
+
             {!editMode
-                ? <p  onDoubleClick={activateEditMode} >{props.message}
-                <div>
-                    {currentTime()}
-                    {props.isEdit && ' (edit)'}
-                </div>
-            </p>
-            :  <TextField id="standard-basic"
-                          label="Edit message"
-                          variant="standard"
-                          fullWidth
-                          onChange={editMessageText}
-                          value={newMessageText}
-                          onBlur={activateViewMode}
-                          autoFocus/>}
+                ? <p>{props.message}
+                    <div>
+                        {currentTime()}
+                        {props.isEdit && ' (edit)'}
+                    </div>
+                </p>
+                : <TextField id="standard-basic"
+                             label="Edit message"
+                             variant="standard"
+                             fullWidth
+                             onChange={editMessageText}
+                             value={newMessageText}
+                             onBlur={activateViewMode}
+                             autoFocus/>}
             <img src="https://www.seoclerk.com/pics/319222-1IvI0s1421931178.png" alt="userAvatar"/>
         </SentMessageContainer>
     );
