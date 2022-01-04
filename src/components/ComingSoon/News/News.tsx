@@ -45,12 +45,6 @@ function News() {
                     <Grid container className={classes.root} item direction={"row"} flexWrap={"nowrap"}>
                         <TextField/>
                         <Button className={classes.button} variant={"contained"} color={"primary"}>Add</Button>
-                        <Slider
-                            size="small"
-                            defaultValue={70}
-                            aria-label="Small"
-                            valueLabelDisplay="on"
-                        />
                     </Grid>
                 </Root>
             </Paper>

@@ -119,7 +119,6 @@ const SuspendedChat = withSuspense(Chat)
 
 
 function App() {
-    console.log('app')
     const classes = useClasses(styles);
     const dispatch = useDispatch()
 

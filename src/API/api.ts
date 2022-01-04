@@ -4,6 +4,7 @@ import {
     FollowUnfollowResponseAPIType, ProfileResponseAPIType,
     UsersResponseAPIType
 } from "../APIResponseType/ApiResponseTypes";
+import {ProfileType} from "../redux/profile-reducer";
 
 
 
@@ -42,6 +43,19 @@ export const profileAPI = {
         //todo type
         return instance.put<any>(`profile/status`, {status})
             .then(response => response.data)
+    },
+    savePhoto: (file: File) => {
+        const formData = new FormData()
+        formData.append("image", file)
+        return instance.put<any>(`profile/photo`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(response => response.data)
+    },
+    saveProfile(profile: ProfileType) {
+        return instance.put<any>(`profile`, profile).then(res => res.data);
     }
 }
 

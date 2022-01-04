@@ -28,7 +28,9 @@ function Profile(props: ProfilePropsType) {
                   spacing={4}>
                 <Grid item>
                     <Paper elevation={4}>
-                        <ProfileInfo profile={props.profile}/>
+                        <ProfileInfo profile={props.profile}
+                                     isOwner={props.isOwner}
+                                     savePhoto={props.savePhoto}/>
                     </Paper>
                 </Grid>
                 <Grid item>
@@ -47,7 +49,8 @@ function Profile(props: ProfilePropsType) {
                     <Paper elevation={4}>
                         <UserInfo profile={props.profile}
                                   status={props.status}
-                                  updateStatus={props.updateStatus}/>
+                                  updateStatus={props.updateStatus}
+                                  isOwner={props.isOwner}/>
                     </Paper>
                 </Grid>
                 <Grid item>
