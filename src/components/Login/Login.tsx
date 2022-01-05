@@ -18,11 +18,14 @@ import {AppStateType} from "../../redux/redux-store";
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 
-
-type FormDataType = {
+type LoginFormOwnProps = {
+    captchaUrl: string
+}
+type LoginFormValuesType = {
     login: string
     password: string
     rememberMe: boolean
+    captcha: string
 }
 
 //@ts-ignore
@@ -52,7 +55,8 @@ const renderCheckbox = ({input, label}) => (
 )
 
 
-const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({handleSubmit, error}) => {
+const LoginForm: React.FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnProps> & LoginFormOwnProps>
+    = ({handleSubmit, error, captchaUrl}) => {
 
     return (
         <form onSubmit={handleSubmit}>
@@ -67,6 +71,12 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({handleSubmit, err
                    component={renderTextField}
                    validate={[requiredField]}
             />
+            {captchaUrl && <img src={captchaUrl}  alt="captcha"/>}
+            {captchaUrl && <Field name={'captcha'}
+                                  type={"text"}
+                                  label="captcha"
+                                  component={renderTextField}
+                                  validate={[requiredField]}/>}
             <Grid item flexWrap={'wrap'}>
                 <Field name={'rememberMe'} label='Remember me' component={renderCheckbox}/>
                 <Button variant={"contained"} type={"submit"} color={"primary"}>Sign in</Button>
@@ -78,19 +88,20 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({handleSubmit, err
     );
 }
 
-const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
+const LoginReduxForm = reduxForm<LoginFormValuesType, LoginFormOwnProps>({form: 'login'})(LoginForm)
 
 
 type loginPropsType = {
-    login: (email: string, password: string, rememberMe: boolean) => void
+    login: (email: string, password: string, rememberMe: boolean, captcha: string) => void
 }
 
 const Login = (props: loginPropsType) => {
 
     const isAuth = useSelector<AppStateType, boolean>(state => state.auth.isAuth)
+    const captchaUrl = useSelector<AppStateType, string | null>(state => state.auth.captchaURL)
 
-    const onSubmit = (formData: FormDataType) => {
-        props.login(formData.login, formData.password, formData.rememberMe)
+    const onSubmit = (formData: LoginFormValuesType) => {
+        props.login(formData.login, formData.password, formData.rememberMe, formData.captcha)
 
     }
 
@@ -111,7 +122,7 @@ const Login = (props: loginPropsType) => {
                 </ul>
             </LogInInfoContainer>
             <LogInFormContainer elevation={4}>
-                <LoginReduxForm onSubmit={onSubmit}/>
+                <LoginReduxForm onSubmit={onSubmit} captchaUrl={captchaUrl!}/>
             </LogInFormContainer>
         </RootContentContainer>
     );

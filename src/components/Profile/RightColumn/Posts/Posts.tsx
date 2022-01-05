@@ -28,7 +28,6 @@ const NoPostsContainer = styled(Grid)`
 
 const Posts = React.memo((props: PostsPropsType) => {
 
-    console.log('render posts')
 
     const postsElement = props.posts.map(p =>
         <PostContainer container item key={p.id}>

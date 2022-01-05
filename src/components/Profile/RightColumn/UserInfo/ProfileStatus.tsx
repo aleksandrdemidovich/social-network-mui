@@ -5,6 +5,7 @@ import {Input, styled, Tooltip} from "@mui/material";
 type ProfileStatusPropsType = {
     status: string
     updateStatus: (status: string) => void
+    isOwner: boolean
 }
 
 const ProfileStatusWithHooks =  (props: ProfileStatusPropsType) => {
@@ -27,6 +28,14 @@ const ProfileStatusWithHooks =  (props: ProfileStatusPropsType) => {
     }
     const onStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setStatus(e.currentTarget.value)
+    }
+
+    if(!props.isOwner){
+        return (
+            <div style={{marginRight:'20px'}}>
+                {status ? status : 'Set status'}
+            </div>
+        )
     }
 
     return (

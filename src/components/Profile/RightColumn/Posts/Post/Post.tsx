@@ -9,7 +9,8 @@ import {styled} from "@mui/material/styles";
 import {PostType, setDislike, setLike} from '../../../../../redux/profile-reducer';
 import {PhotosType} from "../../../../../redux/users-reducer";
 import defaultUserAvatar from "../../../../../assets/images/userAvatar.jpg";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "../../../../../redux/redux-store";
 
 
 function checkOneDigitNumbers(i: any) {
@@ -71,6 +72,9 @@ type PostPropsType = {
 const Post = React.memo((props: PostType & PostPropsType) => {
 
     const classes = useClasses(styles);
+
+    const loggedUserPhoto = useSelector<AppStateType, string>(state => state.profilePage.loggedUserPhoto)
+
     const dispatch = useDispatch()
 
     const addLike = () => {
@@ -83,8 +87,7 @@ const Post = React.memo((props: PostType & PostPropsType) => {
     const removePost = () => props.deletePost(props.id)
 
     return (
-        <RootPostContainer container item spacing={2}
-               >
+        <RootPostContainer container item spacing={2}>
             <Grid container item spacing={2} direction={"row"} alignItems={"flex-start"}>
                 <Grid item>
                     <Avatar

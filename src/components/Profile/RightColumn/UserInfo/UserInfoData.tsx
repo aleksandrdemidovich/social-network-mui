@@ -48,6 +48,7 @@ function UserInfoData(props: UserInfoPropsType) {
                 {props.profile.fullName}
             </Typography>
             <ProfileStatus status={props.status}
+                           isOwner = {props.isOwner}
                            updateStatus={props.updateStatus}/>
             {/*<Input disableUnderline value={props.profile.aboutMe ? props.profile.aboutMe : '' } placeholder="Set status" className={classes.statusInput}/>*/}
             <StyledBadge invisible={!props.profile.lookingForAJob} badgeContent={'Open to work'}

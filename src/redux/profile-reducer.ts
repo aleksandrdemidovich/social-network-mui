@@ -13,6 +13,7 @@ const SET_STATUS = "SET-STATUS"
 const SET_LIKE = "SET-LIKE"
 const SET_DISLIKE = "SET-DISLIKE"
 const SAVE_PHOTO_SUCCESS = "SAVE-PHOTO-SUCCESS"
+const SET_LOGGED_USER_PHOTO = "SET-LOGGED-USER-PHOTO"
 
 export type PostType = {
     id: string
@@ -43,6 +44,7 @@ export type ProfilePageType = {
     posts: Array<PostType>
     profile: ProfileType
     status: string
+    loggedUserPhoto: string
 }
 
 export type InitialStateType = typeof initialState
@@ -79,7 +81,8 @@ const initialState: ProfilePageType = {
             small: null
         }
     } as ProfileType,
-    status: ''
+    status: '',
+    loggedUserPhoto: ''
 }
 
 
@@ -115,7 +118,9 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
                     ? {...p, likeCount: p.likeCount - 1, isLiked: false} : p)
             }
         case "SAVE-PHOTO-SUCCESS":
-            return {...state, profile:{...state.profile, photos: action.photos}}
+            return {...state, profile: {...state.profile, photos: action.photos}}
+        case "SET-LOGGED-USER-PHOTO":
+            return {...state, loggedUserPhoto: action.photo}
         default :
             return state
     }
@@ -129,6 +134,7 @@ type ActionsType = AddPostActionType
     | setLikeActionType
     | setDislikeActionType
     | savePhotoSuccessActionType
+    | setLoggedUserPhotoActionType
 
 export type AddPostActionType = ReturnType<typeof addPostActionCreator>
 export const addPostActionCreator = (newPostText: string) => {
@@ -186,12 +192,23 @@ export const savePhotoSuccess = (photos: any) => {
     } as const
 }
 
+export type setLoggedUserPhotoActionType = ReturnType<typeof setLoggedUserPhoto>
+export const setLoggedUserPhoto = (photo: string) => {
+    return {
+        type: SET_LOGGED_USER_PHOTO,
+        photo
+    } as const
+}
 
 //thunk
-export const getUserProfile = (userId: string) => async (dispatch: Dispatch) => {
+export const getUserProfile = (userId: string) => async (dispatch: Dispatch, getState: () => AppStateType) => {
+    const loggedUserId = getState().auth.id
     dispatch(toggleIsFetching(true))
     let response = await profileAPI.getProfile(userId)
     dispatch(setUserProfile(response))
+    if(userId === loggedUserId!.toString()){
+        dispatch(setLoggedUserPhoto(response.photos.large!))
+    }
 }
 
 
@@ -202,17 +219,24 @@ export const getStatus = (userId: string) => async (dispatch: Dispatch) => {
 
 
 export const updateStatus = (status: string) => async (dispatch: Dispatch) => {
+    dispatch(setAppError(''))
     let response = await profileAPI.updateStatus(status)
     if (response.resultCode === 0) {
         dispatch(setStatus(status))
+    } else {
+        dispatch(setAppError(response.messages[0]))
     }
 }
 
 export const savePhoto = (file: File) => async (dispatch: Dispatch) => {
+    dispatch(setAppError(''))
     dispatch(toggleInProgress(true))
     let response = await profileAPI.savePhoto(file)
     if (response.resultCode === 0) {
         dispatch(savePhotoSuccess(response.data.photos))
+        dispatch(toggleInProgress(false))
+    } else {
+        dispatch(setAppError(response.messages[0]))
         dispatch(toggleInProgress(false))
     }
 }
@@ -228,7 +252,7 @@ export const saveProfile = (profile: any) => async (dispatch: Dispatch<any>, get
             dispatch(getUserProfile(userId.toString()))
             dispatch(toggleInProgress(false))
         }
-    } else if (data.resultCode === 1)  {
+    } else if (data.resultCode === 1) {
         dispatch(setAppError(data.messages[0]))
         dispatch(toggleInProgress(false))
     }

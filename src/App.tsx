@@ -23,9 +23,10 @@ import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "./redux/redux-store";
-import {initializeApp} from "./redux/app-reducer";
+import {initializeApp, setAppError} from "./redux/app-reducer";
 import Preloader from "./common/Preloader/Preloader";
 import {withSuspense} from "./hoc/WithSuspense";
+import Error404 from "./common/Error404/Error404";
 
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
@@ -132,8 +133,17 @@ function App() {
     const initialized = useSelector<AppStateType, boolean>(state => state.app.initialized)
 
 
+    const catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
+        alert(e.reason)
+    }
+
     useEffect(() => {
         dispatch(initializeApp())
+        window.addEventListener('unhandledrejection', catchAllUnhandledErrors)
+
+        return () => {
+            window.removeEventListener('unhandledrejection', catchAllUnhandledErrors)
+        }
     }, [])
 
     if (!initialized) {
@@ -178,6 +188,7 @@ function App() {
                             <Route path='/settings' render={() => <Settings/>}/>
                             <Route path='/login' render={() => <Login/>}/>
                             <Route path='/chat' render={() => <SuspendedChat/>}/>
+                            <Route path='*' render={() => <Error404/>}/>
 
                         </Switch>
                     </Grid>

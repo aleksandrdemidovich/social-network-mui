@@ -4,6 +4,8 @@ import {AddPostPropsType} from "./AddPostContainer";
 import useClasses from "../../../../customHookCSS/useClasses";
 import {Field, reduxForm} from "redux-form";
 import {maxLengthCreator, requiredField} from "../../../../utils/validators/validators";
+import {useSelector} from "react-redux";
+import {AppStateType} from "../../../../redux/redux-store";
 
 const styles = (theme: any) => ({
     rootContainer: {
@@ -18,7 +20,9 @@ function AddPost(props: AddPostPropsType) {
 
     const classes = useClasses(styles);
 
-
+    const loggedUserPhoto = useSelector<AppStateType, string>(state => state.profilePage.loggedUserPhoto)
+    // const idAuthUser = useSelector<AppStateType, number>(state => state.auth.id!)
+    // const currentProfileId = useSelector<AppStateType, number>(state => state.profilePage.profile.userId!)
 
 
     // const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -43,7 +47,7 @@ function AddPost(props: AddPostPropsType) {
         <Grid container item display={"flex"} direction={"row"} flexWrap={"nowrap"} className={classes.rootContainer}>
             <Avatar
                 alt={props.profilePage.profile.fullName.charAt(0)}
-                src={'https://www.seoclerk.com/pics/319222-1IvI0s1421931178.png'}
+                src={loggedUserPhoto}
                 sx={{width: 50, height: 50}}
             />
             <AddPostFormRedux onSubmit={addNewPost}/>
