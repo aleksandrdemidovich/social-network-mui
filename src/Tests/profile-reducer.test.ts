@@ -34,7 +34,8 @@ const state = {
             small: null
         }
     } as ProfileType,
-    status: ''
+    status: '',
+    loggedUserPhoto: ''
 }
 
 test(('new post should be added'), () => {

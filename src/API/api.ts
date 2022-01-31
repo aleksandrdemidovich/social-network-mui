@@ -23,9 +23,11 @@ export const usersAPI = {
     },
     follow: (id: number) => {
         return instance.post<FollowUnfollowResponseAPIType>(`follow/${id}`)
+            .then(res => res.data)
     },
     unfollow: (id: number) => {
         return instance.delete<FollowUnfollowResponseAPIType>(`follow/${id}`)
+            .then(res => res.data)
     },
 }
 
