@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import CloseIcon from '@mui/icons-material/Close';
-import {Badge, BadgeProps, Grid, IconButton, LinearProgress, Paper, styled, Tooltip, Typography} from "@mui/material";
+import {Grid, IconButton, LinearProgress, Paper, styled, Tooltip} from "@mui/material";
 import useClasses from "../../../../customHookCSS/useClasses";
 import {ProfileType} from "../../../../redux/profile-reducer";
 import UserInfoData from "./UserInfoData";

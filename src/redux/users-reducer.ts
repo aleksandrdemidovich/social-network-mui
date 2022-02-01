@@ -5,11 +5,12 @@ const FOLLOW = "FOLLOW"
 const UNFOLLOW = "UNFOLLOW"
 const SET_USERS = "SET-USERS"
 const SET_CURRENT_PAGE = "SET-CURRENT-PAGE"
+const SET_FILTER = "SET-FILTER"
 const SET_TOTAL_USER_COUNT = "SET-TOTAL-USER-COUNT"
 const SET_USER_COUNT_PER_PAGE = "SET-USER-COUNT-PER-PAGE"
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING"
 const TOGGLE_IS_FOLLOWING_PROGRESS = "TOGGLE-IS-FOLLOWING-PROGRESS"
-const TOGGLE_ALL_USERS_OR_FRIENDS = "TOGGLE-ALL-USERS-OR-FRIENDS"
+
 
 export type locationType = {
     city: string | null
@@ -29,14 +30,18 @@ export type UserType = {
 }
 
 export type  InitialStateType = typeof initialState
+export type  FilterType = typeof initialState.filter
 const initialState = {
     users: [] as Array<UserType>,
     pageSize: 5,
     totalUsersCount: 0,
     currentPage: 1,
-    isFriends: false,
     isFetching: false,
-    followingInProgress: [] as number[]
+    followingInProgress: [] as number[],
+    filter: {
+        term: '',
+        friend: null as null | boolean
+    }
 }
 
 
@@ -62,8 +67,8 @@ export const usersReducer = (state: InitialStateType = initialState, action: Act
                     ? [...state.followingInProgress, action.userId]
                     : [state.followingInProgress.filter(id => id !== action.userId)]
             } as InitialStateType
-        case "TOGGLE-ALL-USERS-OR-FRIENDS":
-            return {...state, isFriends: action.isFriends}
+        case "SET-FILTER":
+            return {...state, filter: action.filter}
         default :
             return state
     }
@@ -77,7 +82,7 @@ export type ActionsType = unfollowActionType
     | toggleIsFetchingActionType
     | toggleFollowingProgressActionType
     | setUserCountPerPageActionType
-    | toggleAllUsersOrFriendsActionType
+    | setFilterActionType
 
 
 export type followActionType = ReturnType<typeof followSuccess>
@@ -109,6 +114,14 @@ export const setCurrentPage = (page: number) => {
     return {
         type: SET_CURRENT_PAGE,
         page
+    } as const
+}
+
+export type setFilterActionType = ReturnType<typeof setFilter>
+export const setFilter = (filter: FilterType) => {
+    return {
+        type: SET_FILTER,
+        filter
     } as const
 }
 
@@ -144,21 +157,14 @@ export const toggleFollowingProgress = (isProgress: boolean, userId: number) => 
     } as const
 }
 
-export type toggleAllUsersOrFriendsActionType = ReturnType<typeof toggleAllUsersOrFriends>
-export const toggleAllUsersOrFriends = (isFriends: boolean) => {
-    return {
-        type: TOGGLE_ALL_USERS_OR_FRIENDS,
-        isFriends
-    } as const
-}
 
 //thunk
-export const requestUsers = (page: number, pageSize: number, isFriends: boolean) => async (dispatch: Dispatch) => {
+export const requestUsers = (page: number, pageSize: number, filter: FilterType) => async (dispatch: Dispatch) => {
     dispatch(toggleIsFetching(true))
     dispatch(setCurrentPage(page))
     dispatch(setUserCountPerPage(pageSize))
-    dispatch(toggleAllUsersOrFriends(isFriends))
-    let response = await usersAPI.getUsers(page, pageSize, isFriends)
+    dispatch(setFilter(filter))
+    let response = await usersAPI.getUsers(page, pageSize, filter.term, filter.friend)
     dispatch(toggleIsFetching(false))
     dispatch(setUsers(response.items))
     dispatch(setTotalUsersCount(response.totalCount))

@@ -28,7 +28,7 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
 
 class SuggestionsContainer extends React.Component<SuggestionsPropsType> {
     componentDidMount() {
-        usersAPI.getUsers(1, 30, false).then(data => {
+        usersAPI.getUsers(1, 30, '').then(data => {
                 this.props.setUsers(data.items)
             });
     }

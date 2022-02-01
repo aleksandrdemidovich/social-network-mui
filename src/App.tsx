@@ -43,6 +43,9 @@ const lightTheme = createTheme({
         secondary: {
             main: '#f50057',
         },
+        success: {
+            main: '#81c784'
+        }
     },
 });
 const darkTheme = createTheme({
@@ -54,6 +57,9 @@ const darkTheme = createTheme({
         secondary: {
             main: '#f50057',
         },
+        success: {
+            main: '#388e3c'
+        }
     } as PaletteOptions,
 });
 

@@ -8,6 +8,7 @@ import {ProfileType} from "../redux/profile-reducer";
 
 
 
+
 const instance = axios.create({
     withCredentials: true,
     headers:{
@@ -17,8 +18,8 @@ const instance = axios.create({
 })
 
 export const usersAPI = {
-    getUsers: (currentPage: number, pageSize: number, isFriends: boolean) => {
-        return instance.get<UsersResponseAPIType>(`users?page=${currentPage}&count=${pageSize}&friend=${isFriends}`)
+    getUsers: (currentPage: number, pageSize: number, term: string = '', friend: null | boolean = null) => {
+        return instance.get<UsersResponseAPIType>(`users?page=${currentPage}&count=${pageSize}&term=${term}` + (friend === null ? '' : `&friend=${friend}`))
             .then(response => response.data)
     },
     follow: (id: number) => {

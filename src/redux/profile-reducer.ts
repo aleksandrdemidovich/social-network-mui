@@ -4,7 +4,7 @@ import {Dispatch} from "redux";
 import {profileAPI} from "../API/api";
 import {setAppError, toggleInProgress} from "./app-reducer";
 import {AppStateType} from "./redux-store";
-import {stopSubmit} from "redux-form";
+
 
 const ADD_POST = "ADD-POST"
 const DELETE_POST = "DELETE-POST"

@@ -1,16 +1,11 @@
-import React, {useEffect} from 'react';
-import {
-    Button,
-    Grid,
-    Input,
-    NativeSelect,
-    Pagination, Select,
-} from "@mui/material";
-import {requestUsers, setUserCountPerPage, toggleAllUsersOrFriends, UserType} from "../../redux/users-reducer";
+import React from 'react';
+import {Grid, NativeSelect, Pagination,} from "@mui/material";
+import {FilterType, setUserCountPerPage, UserType} from "../../redux/users-reducer";
 import Preloader from "../../common/Preloader/Preloader";
 import UserCard from "./UserCard/UserCard";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
+import {UserSearchForm} from "./UsersSearchForm";
 
 
 type UsersPropsType = {
@@ -23,12 +18,13 @@ type UsersPropsType = {
     handlePageChange: (event: React.ChangeEvent<unknown>, pageNumber: number) => void
     isFetching: boolean
     followingInProgress: number[]
+    onFilterChanged: (filter: FilterType) => void
 }
 
 function Users(props: UsersPropsType) {
 
     const usersCountPerPage = useSelector((state: AppStateType) => state.usersPage.pageSize)
-    const isFriends = useSelector((state: AppStateType) => state.usersPage.isFriends)
+    const usersFilter = useSelector((state: AppStateType) => state.usersPage.filter)
 
     const dispatch = useDispatch()
 
@@ -49,39 +45,13 @@ function Users(props: UsersPropsType) {
     const onChangeCardsCountPerPage = (value: string) => {
         dispatch(setUserCountPerPage(+value))
     }
-    const onToggleAllUsersOrFriends = (value: string) => {
-        const booleanValue = value.toLowerCase() !== 'false'
-        dispatch(toggleAllUsersOrFriends(booleanValue))
-    }
 
-    useEffect(() => {
-        dispatch(requestUsers(props.currentPage, usersCountPerPage, isFriends))
-    }, [usersCountPerPage, isFriends])
 
     return (
         <Grid container item direction={"column"}>
             <Grid container spacing={2} item direction={"row"} wrap={"nowrap"} alignItems={"center"}
                   style={{padding: '5px'}}>
-                <Grid item xs={12} style={{padding: '15px 0 0 30px'}}>
-                    <Input fullWidth placeholder="Search users"/>
-                </Grid>
-                <Grid item>
-                    <Button variant="contained" color="success" size={"medium"}>Search</Button>
-                </Grid>
-            </Grid>
-            <Grid container item justifyContent={"flex-end"} direction={"row"}
-                  style={{padding: '5px', marginTop: '5px'}}>
-                <Grid item>
-                    <NativeSelect
-                        color={"primary"}
-                        size={"small"}
-                        style={{fontSize: '13px'}}
-                        onChange={(e) => onToggleAllUsersOrFriends(e.currentTarget.value)}
-                        value={isFriends}>
-                        <option value={'false'}>All</option>
-                        <option value={'true'}>Only followed</option>
-                    </NativeSelect>
-                </Grid>
+                <UserSearchForm onFilterChanged={props.onFilterChanged}/>
             </Grid>
             <Grid container item direction={"row"} wrap={"wrap"} justifyContent={"flex-start"}
                   style={{marginTop: '10px', marginLeft: '20px'}}>
@@ -114,3 +84,6 @@ function Users(props: UsersPropsType) {
 
 
 export default Users;
+
+
+
